@@ -14,8 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(test_button_, SIGNAL(released()), this, SLOT(OnTestButtonClicked()));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
