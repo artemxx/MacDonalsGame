@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -19,7 +18,6 @@ private slots:
     void OnTestButtonClicked();
 
 private:
-    Ui::MainWindow *ui;
-    QPushButton* test_button_;
+    Ui::MainWindow *Ui;
+    QPushButton* TestButton;
 };
-#endif // MAINWINDOW_H

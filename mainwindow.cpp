@@ -5,17 +5,17 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , Ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    Ui->setupUi(this);
 
-    test_button_ = new QPushButton("My Button", this);
-    test_button_->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
-    connect(test_button_, SIGNAL(released()), this, SLOT(OnTestButtonClicked()));
+    TestButton = new QPushButton("My Button", this);
+    TestButton->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
+    connect(TestButton, SIGNAL(released()), this, SLOT(OnTestButtonClicked()));
 }
 
 MainWindow::~MainWindow() {
-    delete ui;
+    delete Ui;
 }
 
 void MainWindow::OnTestButtonClicked() {
