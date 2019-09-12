@@ -10,6 +10,8 @@
 #include <QStyle>
 #include <QImage>
 
+#include "list.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -21,19 +23,10 @@ public:
     TMainWindow(QWidget* parent = nullptr);
     ~TMainWindow();
 
-    void PushFirstDequeFront(const QString& name) {}
-    void PushSecondDequeFront(const QString& name) {}
+    void DrawFirstDeque(const TBiDirectionalList<QString>& deque) {}
+    void DrawSecondDeque(const TBiDirectionalList<QString>& deque) {}
 
-    void PushFirstDequeBack(const QString& name) {}
-    void PushSecondDequeBack(const QString& name) {}
-
-    void PopFirstDequeFront() {}
-    void PopSecondDequeFront(){}
-
-    void PopFirstDequeBack() {}
-    void PopSecondDequeBack() {}
-
-    void CompareDeques(bool result) {}
+    void DrawCompareResult(bool result) {}
 
 private:
     void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
