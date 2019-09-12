@@ -1,26 +1,25 @@
 #include <memory>
 #include <QString>
+#include "abstractdequecontroller.h"
 #include "mainwindow.h"
-#include "list.h"
 
-class TDequeController {
+class TDequeController : public TAbstractDequeController {
  public:
-  explicit TDequeController(TMainWindow* view);
+     explicit TDequeController(TMainWindow* view);
+     ~TDequeController() override = default;
 
-  void PushFirstDequeFront(const QString& name);
-  void PushFirstDequeBack(const QString& name);
-  void PopFirstDequeFront();
-  void PopFirstDequeBack();
+    void PushFirstDequeFront(const QString& name) override;
+    void PushFirstDequeBack(const QString& name) override;
+    void PopFirstDequeFront() override;
+    void PopFirstDequeBack() override;
 
-  void PushSecondDequeFront(const QString& name);
-  void PushSecondDequeBack(const QString& name);
-  void PopSecondDequeFront();
-  void PopSecondDequeBack();
+    void PushSecondDequeFront(const QString& name) override;
+    void PushSecondDequeBack(const QString& name) override;
+    void PopSecondDequeFront() override;
+    void PopSecondDequeBack() override;
 
-  void CompareDeques();
+    void CompareDeques() override;
 
  protected:
-  TMainWindow* View;
-  TBiDirectionalList<QString> FirstDeque;
-  TBiDirectionalList<QString> SecondDeque;
+    TMainWindow* View;
 };
