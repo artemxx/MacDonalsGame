@@ -101,6 +101,8 @@ class TBiDirectionalList {
     TIterator Find(std::function<bool(const T&)> predicate);
     TConstIterator Find(std::function<bool(const T&)> predicate) const;
 
+    int GetSize();
+
   protected:
     struct TNode {
         explicit TNode(const T& value)
@@ -119,6 +121,8 @@ class TBiDirectionalList {
 
     TNode* First;
     TNode* Last;
+
+    int Size;
 
     void InsertBefore(TNode* existingNode, TNode* newNode);
     void InsertAfter(TNode* existingNode, TNode* newNode);
@@ -392,6 +396,11 @@ typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::Find(std::
 }
 
 template<typename T>
+int TBiDirectionalList<T>::GetSize() {
+    return Size;
+}
+
+template<typename T>
 void TBiDirectionalList<T>::InsertBefore(TBiDirectionalList::TNode* existingNode, TBiDirectionalList::TNode* newNode) {
     if (newNode == nullptr) {
         throw std::invalid_argument("Attempt to insert nullptr!");
@@ -404,6 +413,7 @@ void TBiDirectionalList<T>::InsertBefore(TBiDirectionalList::TNode* existingNode
         InsertAfter(existingNode->PreviousNode, newNode);
         return;
     }
+    ++Size;
     First->PreviousNode = newNode;
     newNode->NextNode = First;
     newNode->PreviousNode = nullptr;
@@ -416,12 +426,14 @@ void TBiDirectionalList<T>::InsertAfter(TBiDirectionalList::TNode* existingNode,
         throw std::invalid_argument("Attempt to insert nullptr!");
     }
     if (First == nullptr) {
+        ++Size;
         First = Last = newNode;
         return;
     }
     if (existingNode == nullptr) {
         throw std::invalid_argument("Attempt to insert after end!");
     }
+    ++Size;
     if (existingNode != Last) {
         existingNode->NextNode->PreviousNode = newNode;
     } else {
@@ -437,6 +449,7 @@ void TBiDirectionalList<T>::Erase(TBiDirectionalList::TNode* node) {
     if (node == nullptr) {
         throw std::invalid_argument("Attempt to erase nullptr!");
     }
+    --Size;
     if (node == First) {
         First = node->NextNode;
         if (First != nullptr) {
