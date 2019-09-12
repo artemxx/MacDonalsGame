@@ -18,6 +18,20 @@ public:
     TMainWindow(QWidget* parent = nullptr);
     ~TMainWindow();
 
+    void PushFirstDequeFront(const QString& name) {}
+    void PushSecondDequeFront(const QString& name) {}
+
+    void PushFirstDequeBack(const QString& name) {}
+    void PushSecondDequeBack(const QString& name) {}
+
+    void PopFirstDequeFront() {}
+    void PopSecondDequeFront(){}
+
+    void PopFirstDequeBack() {}
+    void PopSecondDequeBack() {}
+
+    void CompareDeques(bool result) {}
+
 private:
     void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
         static const auto itemSizePolicy
