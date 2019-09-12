@@ -10,12 +10,13 @@ TMainWindow::TMainWindow(QWidget *parent)
     , RightLabel(new QLabel("В очереди:"))
     , LeftNumber(new QLCDNumber())
     , RightNumber(new QLCDNumber())
-    , LeftTextInput(new QLineEdit())
-    , RightTextInput(new QLineEdit())
     , LeftBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
     , RightBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
     , LeftFrontServeButton(new QPushButton("Обслужить"))
     , RightFrontServeButton(new QPushButton("Обслужить"))
+    , LeftTextInput(new QLineEdit())
+    , RightTextInput(new QLineEdit())
+    , ComparisonButton(new QPushButton("Сравнить очереди"))
     , AddClientFrontLeftButton(new QPushButton("Мне только спросить"))
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
@@ -23,6 +24,7 @@ TMainWindow::TMainWindow(QWidget *parent)
     , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
+    setMinimumSize(1000, 500);
 
     AddWidgets();
 
