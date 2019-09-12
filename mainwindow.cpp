@@ -6,33 +6,53 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , Ui(new Ui::MainWindow)
-    , AddClientLeftButton(new QPushButton("Add client"))
-    , AddClientRightButton(new QPushButton("Add client"))
+    , LeftLabel(new QLabel("В очереди:"))
+    , RightLabel(new QLabel("В очереди:"))
+    , LeftNumber(new QLCDNumber())
+    , RightNumber(new QLCDNumber())
+    , LeftTextInput(new QLineEdit())
+    , RightTextInput(new QLineEdit())
+    , AddClientFrontLeftButton(new QPushButton("Мне только спросить"))
+    , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
+    , AddClientBackLeftButton(new QPushButton("Встать в конец"))
+    , AddClientBackRightButton(new QPushButton("Встать в конец"))
     , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
 
-    Layout->addWidget(AddClientLeftButton, 0, 0, Qt::AlignCenter);
-    Layout->addWidget(AddClientRightButton, 0, 1, Qt::AlignCenter);
+    SetSizePolicies();
+    AddWidgets();
 
     auto widget = new QWidget();
     widget->setLayout(Layout);
     setCentralWidget(widget);
 
-    connect(AddClientLeftButton, SIGNAL(released()), this, SLOT(OnAddClientLeftButtonClicked()));
-    connect(AddClientRightButton, SIGNAL(released()), this, SLOT(OnAddClientRightButtonClicked()));
+    connect(LeftTextInput, &QLineEdit::returnPressed, [&](){
+        static int cnt = 0;
+        qDebug() << "Test message #" << ++cnt;
+    });
+    connect(RightTextInput, &QLineEdit::returnPressed, [&](){
+        static int cnt = 0;
+        qDebug() << "Kekt message #" << ++cnt;
+    });
+    connect(AddClientFrontLeftButton, &QPushButton::clicked, [&](){
+        static int cnt = 0;
+        qDebug() << "Test message #" << ++cnt;
+    });
+    connect(AddClientFrontRightButton, &QPushButton::clicked, [&](){
+        static int cnt = 0;
+        qDebug() << "Test message #" << ++cnt;
+    });
+    connect(AddClientBackLeftButton, &QPushButton::clicked, [&](){
+        static int cnt = 0;
+        qDebug() << "Test message #" << ++cnt;
+    });
+    connect(AddClientBackRightButton, &QPushButton::clicked, [&](){
+        static int cnt = 0;
+        qDebug() << "Test message #" << ++cnt;
+    });
 }
 
 MainWindow::~MainWindow() {
     delete Ui;
-}
-
-void MainWindow::OnAddClientLeftButtonClicked() {
-    static int cnt = 0;
-    qDebug() << "Test message #" << ++cnt;
-}
-
-void MainWindow::OnAddClientRightButtonClicked() {
-    static int cnt = 0;
-    qDebug() << "Kek #" << ++cnt;
 }
