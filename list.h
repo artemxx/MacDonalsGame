@@ -315,11 +315,11 @@ bool operator==(const TBiDirectionalList<T>& lhs, const TBiDirectionalList<T>& r
     }
     typename TBiDirectionalList<T>::TConstIterator lhsIt = lhs.begin();
     typename TBiDirectionalList<T>::TConstIterator rhsIt = rhs.begin();
-    while (lhsIt != lhs.End() && (*lhsIt) == (*rhsIt)) {
+    while (lhsIt != lhs.end() && (*lhsIt) == (*rhsIt)) {
         ++lhsIt;
         ++rhsIt;
     }
-    return lhsIt == rhs.End();
+    return lhsIt == rhs.end();
 }
 
 template<typename T>
