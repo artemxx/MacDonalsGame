@@ -8,6 +8,7 @@
 #include <QLCDNumber>
 #include <QDebug>
 #include <QStyle>
+#include <QImage>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -98,6 +99,8 @@ private:
     QPushButton* AddClientFrontRightButton;
     QPushButton* AddClientBackLeftButton;
     QPushButton* AddClientBackRightButton;
+
+    QImage* ImageMacDonals;
 
     QGridLayout* Layout;
 };
