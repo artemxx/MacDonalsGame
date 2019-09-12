@@ -78,18 +78,8 @@ class TBiDirectionalList {
 
     std::vector<T> AsArray() const;
 
-    friend bool operator==(const TBiDirectionalList& lhs, const TBiDirectionalList& rhs) {
-        if (lhs.GetSize() != rhs.GetSize()) {
-            return false;
-        }
-        TConstIterator lhsIt = lhs.begin();
-        TConstIterator rhsIt = rhs.begin();
-        while (lhsIt != lhs.End() && (*lhsIt) == (*rhsIt)) {
-            ++lhsIt;
-            ++rhsIt;
-        }
-        return lhsIt == rhs.End();
-    }
+    template<class C>
+    friend bool operator==(const TBiDirectionalList<C>& lhs, const TBiDirectionalList<C>& rhs);
 
     void InsertBefore(TIterator position, const T& value);
     void InsertBefore(TIterator position, T&& value);
@@ -316,6 +306,20 @@ std::vector<T> TBiDirectionalList<T>::AsArray() const {
     std::vector<T> result;
     std::copy(begin(), end(), back_inserter(result));
     return result;
+}
+
+template<typename T>
+bool operator==(const TBiDirectionalList<T>& lhs, const TBiDirectionalList<T>& rhs) {
+    if (lhs.GetSize() != rhs.GetSize()) {
+        return false;
+    }
+    typename TBiDirectionalList<T>::TConstIterator lhsIt = lhs.begin();
+    typename TBiDirectionalList<T>::TConstIterator rhsIt = rhs.begin();
+    while (lhsIt != lhs.End() && (*lhsIt) == (*rhsIt)) {
+        ++lhsIt;
+        ++rhsIt;
+    }
+    return lhsIt == rhs.End();
 }
 
 template<typename T>
