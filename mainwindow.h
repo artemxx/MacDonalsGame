@@ -8,7 +8,6 @@
 #include <QLCDNumber>
 #include <QDebug>
 #include <QStyle>
-#include <QImage>
 
 #include "list.h"
 
@@ -92,8 +91,6 @@ private:
     QPushButton* AddClientFrontRightButton;
     QPushButton* AddClientBackLeftButton;
     QPushButton* AddClientBackRightButton;
-
-    QImage* ImageMacDonals;
 
     QGridLayout* Layout;
 };

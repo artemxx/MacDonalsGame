@@ -21,7 +21,6 @@ TMainWindow::TMainWindow(QWidget *parent)
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
     , AddClientBackRightButton(new QPushButton("Встать в конец"))
-    , ImageMacDonals(new QImage("Mac3.png"))
     , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
