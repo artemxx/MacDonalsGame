@@ -78,6 +78,19 @@ class TBiDirectionalList {
 
     std::vector<T> AsArray() const;
 
+    friend bool operator==(const TBiDirectionalList& lhs, const TBiDirectionalList& rhs) {
+        if (lhs.GetSize() != rhs.GetSize()) {
+            return false;
+        }
+        TConstIterator lhsIt = lhs.begin();
+        TConstIterator rhsIt = rhs.begin();
+        while (lhsIt != lhs.End() && (*lhsIt) == (*rhsIt)) {
+            ++lhsIt;
+            ++rhsIt;
+        }
+        return lhsIt == rhs.End();
+    }
+
     void InsertBefore(TIterator position, const T& value);
     void InsertBefore(TIterator position, T&& value);
 
@@ -101,7 +114,7 @@ class TBiDirectionalList {
     TIterator Find(std::function<bool(const T&)> predicate);
     TConstIterator Find(std::function<bool(const T&)> predicate) const;
 
-    int GetSize();
+    int GetSize() const;
 
   protected:
     struct TNode {
@@ -396,7 +409,7 @@ typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::Find(std::
 }
 
 template<typename T>
-int TBiDirectionalList<T>::GetSize() {
+int TBiDirectionalList<T>::GetSize() const {
     return Size;
 }
 
