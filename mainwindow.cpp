@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
+TMainWindow::TMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , Ui(new Ui::MainWindow)
     , LeftLabel(new QLabel("В очереди:"))
@@ -12,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     , RightNumber(new QLCDNumber())
     , LeftTextInput(new QLineEdit())
     , RightTextInput(new QLineEdit())
+    , LeftBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
+    , RightBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
+    , LeftFrontServeButton(new QPushButton("Обслужить"))
+    , RightFrontServeButton(new QPushButton("Обслужить"))
     , AddClientFrontLeftButton(new QPushButton("Мне только спросить"))
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
@@ -20,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     Ui->setupUi(this);
 
-    SetSizePolicies();
     AddWidgets();
 
     auto widget = new QWidget();
@@ -53,6 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     });
 }
 
-MainWindow::~MainWindow() {
+TMainWindow::~TMainWindow() {
     delete Ui;
 }

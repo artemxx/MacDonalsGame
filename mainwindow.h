@@ -11,35 +11,20 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class TMainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    TMainWindow(QWidget* parent = nullptr);
+    ~TMainWindow();
 
 private:
-    void SetSizePolicy(QWidget* widget) {
+    void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
         static const auto itemSizePolicy
             = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         widget->setSizePolicy(itemSizePolicy);
-    }
 
-    void SetSizePolicies() {
-        SetSizePolicy(LeftLabel);
-        SetSizePolicy(RightLabel);
-        SetSizePolicy(LeftNumber);
-        SetSizePolicy(RightNumber);
-        SetSizePolicy(LeftTextInput);
-        SetSizePolicy(RightTextInput);
-        SetSizePolicy(AddClientFrontLeftButton);
-        SetSizePolicy(AddClientFrontRightButton);
-        SetSizePolicy(AddClientBackLeftButton);
-        SetSizePolicy(AddClientBackRightButton);
-    }
-
-    void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
         Layout->addWidget(widget, x, y, flag);
     }
 
@@ -48,15 +33,20 @@ private:
         AddWidget(RightLabel, 0, 5, Qt::AlignCenter);
         AddWidget(LeftNumber, 1, 0);
         AddWidget(RightNumber, 1, 5);
-        AddWidget(LeftTextInput, 2, 0);
-        AddWidget(RightTextInput, 2, 5);
-        AddWidget(AddClientFrontLeftButton, 3, 0);
-        AddWidget(AddClientFrontRightButton, 3, 5);
-        AddWidget(AddClientBackLeftButton, 4, 0);
-        AddWidget(AddClientBackRightButton, 4, 5);
+        AddWidget(LeftTextInput, 4, 0);
+        AddWidget(RightTextInput, 4, 5);
+        AddWidget(LeftBackServeButton, 2, 1);
+        AddWidget(RightBackServeButton, 2, 4);
+        AddWidget(LeftFrontServeButton, 3, 1);
+        AddWidget(RightFrontServeButton, 3, 4);
+        AddWidget(AddClientFrontLeftButton, 5, 0);
+        AddWidget(AddClientFrontRightButton, 5, 5);
+        AddWidget(AddClientBackLeftButton, 6, 0);
+        AddWidget(AddClientBackRightButton, 6, 5);
     }
 
 private:
+    // TODO: group by sence & chande order
     Ui::MainWindow *Ui;
     QLabel* LeftLabel;
     QLabel* RightLabel;
@@ -64,6 +54,10 @@ private:
     QLCDNumber* RightNumber;
     QLineEdit* LeftTextInput;
     QLineEdit* RightTextInput;
+    QPushButton* LeftBackServeButton;
+    QPushButton* RightBackServeButton;
+    QPushButton* LeftFrontServeButton;
+    QPushButton* RightFrontServeButton;
     QPushButton* AddClientFrontLeftButton;
     QPushButton* AddClientFrontRightButton;
     QPushButton* AddClientBackLeftButton;
