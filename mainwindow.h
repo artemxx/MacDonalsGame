@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QGridLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,9 +16,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void OnTestButtonClicked();
+    void OnAddClientLeftButtonClicked();
+    void OnAddClientRightButtonClicked();
 
 private:
     Ui::MainWindow *Ui;
-    QPushButton* TestButton;
+    QPushButton* AddClientLeftButton;
+    QPushButton* AddClientRightButton;
+    QGridLayout* Layout;
 };

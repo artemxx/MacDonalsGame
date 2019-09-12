@@ -6,20 +6,33 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , Ui(new Ui::MainWindow)
+    , AddClientLeftButton(new QPushButton(tr("Add client")))
+    , AddClientRightButton(new QPushButton(tr("Add client")))
+    , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
 
-    TestButton = new QPushButton("My Button", this);
-    TestButton->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
-    connect(TestButton, SIGNAL(released()), this, SLOT(OnTestButtonClicked()));
+    Layout->addWidget(AddClientLeftButton, 0, 0, Qt::AlignCenter);
+    Layout->addWidget(AddClientRightButton, 0, 1, Qt::AlignCenter);
+
+    auto widget = new QWidget();
+    widget->setLayout(Layout);
+    setCentralWidget(widget);
+
+    connect(AddClientLeftButton, SIGNAL(released()), this, SLOT(OnAddClientLeftButtonClicked()));
+    connect(AddClientRightButton, SIGNAL(released()), this, SLOT(OnAddClientRightButtonClicked()));
 }
 
 MainWindow::~MainWindow() {
     delete Ui;
 }
 
-void MainWindow::OnTestButtonClicked() {
+void MainWindow::OnAddClientLeftButtonClicked() {
     static int cnt = 0;
     qDebug() << "Test message #" << ++cnt;
 }
 
+void MainWindow::OnAddClientRightButtonClicked() {
+    static int cnt = 0;
+    qDebug() << "Kek #" << ++cnt;
+}
