@@ -6,8 +6,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , Ui(new Ui::MainWindow)
-    , AddClientLeftButton(new QPushButton(tr("Add client")))
-    , AddClientRightButton(new QPushButton(tr("Add client")))
+    , AddClientLeftButton(new QPushButton("Add client"))
+    , AddClientRightButton(new QPushButton("Add client"))
     , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
