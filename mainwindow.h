@@ -68,7 +68,7 @@ private:
     }
 
 private:
-    // TODO: group by sence & chande order
+    static constexpr auto MAX_DISPLAYED_COUNT = 8;
     Ui::MainWindow *Ui;
 
     QLabel* LeftLabel;

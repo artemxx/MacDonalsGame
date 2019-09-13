@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QVector>
 
 TMainWindow::TMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,7 +25,7 @@ TMainWindow::TMainWindow(QWidget *parent)
     , Layout(new QGridLayout())
 {
     Ui->setupUi(this);
-    setMinimumSize(1000, 500);
+    setMinimumSize(1000, 700);
 
     AddWidgets();
 
@@ -35,6 +36,7 @@ TMainWindow::TMainWindow(QWidget *parent)
     connect(LeftTextInput, &QLineEdit::returnPressed, [&](){
         static int cnt = 0;
         qDebug() << "Test message #" << ++cnt;
+        LeftLabel->setText("");
     });
     connect(RightTextInput, &QLineEdit::returnPressed, [&](){
         static int cnt = 0;
@@ -61,3 +63,18 @@ TMainWindow::TMainWindow(QWidget *parent)
 TMainWindow::~TMainWindow() {
     delete Ui;
 }
+
+/*
+void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
+    QVector<QLabel*> labels(MAX_DISPLAYED_COUNT);
+    for (auto& label : labels) {
+        label = new QLabel();
+    }
+
+    int displayedCount = 0;
+    typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
+    while (++displayedCount <= MAX_DISPLAYED_COUNT && it != deque.end()) {
+        labels[displayedCount - 1]->setText(*it);
+    }
+}
+*/
