@@ -27,6 +27,8 @@ class TBiDirectionalList {
         bool operator==(const TIterator& other) const;
         bool operator!=(const TIterator& other) const;
 
+        bool IsValid() const;
+
       private:
         friend class TBiDirectionalList;
 
@@ -51,6 +53,8 @@ class TBiDirectionalList {
 
         bool operator==(const TConstIterator& other) const;
         bool operator!=(const TConstIterator& other) const;
+
+        bool IsValid() const;
 
       private:
         friend class TBiDirectionalList;
@@ -199,6 +203,11 @@ bool TBiDirectionalList<T>::TIterator::operator!=(const TBiDirectionalList::TIte
 }
 
 template<typename T>
+bool TBiDirectionalList<T>::TIterator::IsValid() const {
+    return Node != nullptr;
+}
+
+template<typename T>
 const T& TBiDirectionalList<T>::TConstIterator::operator*() const {
     return Node->Value;
 }
@@ -262,6 +271,11 @@ bool TBiDirectionalList<T>::TConstIterator::operator==(const TBiDirectionalList:
 template<typename T>
 bool TBiDirectionalList<T>::TConstIterator::operator!=(const TBiDirectionalList::TConstIterator& other) const {
     return List != other.List || Node != other.Node;
+}
+
+template<typename T>
+bool TBiDirectionalList<T>::TConstIterator::IsValid() const {
+    return Node != nullptr;
 }
 
 template<typename T>
