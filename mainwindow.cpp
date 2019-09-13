@@ -90,10 +90,11 @@ TMainWindow::~TMainWindow() {
 }
 
 void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
-    // TODO: just clear?
     for (auto& label : LeftLabels) {
         label->setText("");
     }
+
+    LeftNumber->display(deque.GetSize());
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
@@ -101,29 +102,28 @@ void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
         LeftLabels[displayedCount - 1]->setText(*it);
     }
 
-    // TODO: what is it
-    // repaint();
+    DiscardCompareButton();
 }
 
-// TODO: more wise name, not result
-void TMainWindow::DrawCompareResult(bool result) {
+void TMainWindow::DrawCompareResult(bool equal) {
     QPalette palette = ComparisonButton->palette();
-    if (result) {
+    qDebug() << palette;
+    if (equal) {
         palette.setColor(QPalette::Button, Qt::green);
     } else {
         palette.setColor(QPalette::Button, Qt::red);
     }
 
-    qDebug() << result;
     ComparisonButton->setPalette(palette);
 }
 
 void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
 {
-    // TODO: just clear?
     for (auto& label : RightLabels) {
         label->setText("");
     }
+
+    RightNumber->display(deque.GetSize());
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
@@ -131,7 +131,12 @@ void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
         RightLabels[displayedCount - 1]->setText(*it);
     }
 
-    // TODO: what is it
-    // repaint();
+    DiscardCompareButton();
+}
+
+void TMainWindow::DiscardCompareButton()
+{
+    QPalette palette = ComparisonButton->palette();
+    ComparisonButton->setPalette(ComparisonButton->style()->standardPalette());
 }
 
