@@ -1,9 +1,9 @@
 #include <QVector>
 
-#include "mainwindow.h"
+#include "view.h"
 #include "ui_mainwindow.h"
 
-TMainWindow::TMainWindow(QWidget *parent)
+TView::TView(QWidget *parent)
     : QMainWindow(parent)
     , Ui(new Ui::MainWindow)
     , LeftLabel(new QLabel("В очереди:"))
@@ -26,7 +26,7 @@ TMainWindow::TMainWindow(QWidget *parent)
     , Layout(new QGridLayout())
     , Images(":/images/dragonfly.jpg", ":/images/artemxx.jpg", ":/images/mac.jpeg",
              ":/images/kfc.jpg", ":/images/eda.jpg", ":/images/kroshka.jpg")
-    , Controller(new TDequeController(this))
+    , Controller(new TController(this))
 {
     Ui->setupUi(this);
     setMinimumSize(1000, 700);
@@ -85,12 +85,12 @@ TMainWindow::TMainWindow(QWidget *parent)
     });
 }
 
-TMainWindow::~TMainWindow() {
+TView::~TView() {
     delete Ui;
     delete Controller;
 }
 
-void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
+void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
     for (auto& label : LeftLabels) {
         label->setText("");
     }
@@ -106,7 +106,7 @@ void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
     DiscardCompareButton();
 }
 
-void TMainWindow::DrawCompareResult(bool equal) {
+void TView::DrawCompareResult(bool equal) {
     QPalette palette = ComparisonButton->palette();
     if (equal) {
         palette.setColor(QPalette::Button, Qt::green);
@@ -117,7 +117,7 @@ void TMainWindow::DrawCompareResult(bool equal) {
     ComparisonButton->setPalette(palette);
 }
 
-void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
+void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
 {
     for (auto& label : RightLabels) {
         label->setText("");
@@ -134,7 +134,7 @@ void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
     DiscardCompareButton();
 }
 
-void TMainWindow::DiscardCompareButton()
+void TView::DiscardCompareButton()
 {
     QPalette palette = ComparisonButton->palette();
     ComparisonButton->setPalette(ComparisonButton->style()->standardPalette());

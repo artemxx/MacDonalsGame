@@ -1,19 +1,19 @@
-#include "dequecontroller.h"
+#include "controller.h"
 
-TDequeController::TDequeController(TAbstractDequeView* view)
+TController::TController(TAbstractView* view)
     : View(view) {}
 
-void TDequeController::PushFirstDequeFront(const QString& name) {
+void TController::PushFirstDequeFront(const QString& name) {
     FirstDeque.PushFront(name);
     View->DrawFirstDeque(FirstDeque);
 }
 
-void TDequeController::PushFirstDequeBack(const QString& name) {
+void TController::PushFirstDequeBack(const QString& name) {
     FirstDeque.PushBack(name);
     View->DrawFirstDeque(FirstDeque);
 }
 
-void TDequeController::PopFirstDequeFront() {
+void TController::PopFirstDequeFront() {
     if (FirstDeque.IsEmpty()) {
         return;
     }
@@ -21,7 +21,7 @@ void TDequeController::PopFirstDequeFront() {
     View->DrawFirstDeque(FirstDeque);
 }
 
-void TDequeController::PopFirstDequeBack() {
+void TController::PopFirstDequeBack() {
     if (FirstDeque.IsEmpty()) {
         return;
     }
@@ -29,17 +29,17 @@ void TDequeController::PopFirstDequeBack() {
     View->DrawFirstDeque(FirstDeque);
 }
 
-void TDequeController::PushSecondDequeFront(const QString& name) {
+void TController::PushSecondDequeFront(const QString& name) {
     SecondDeque.PushFront(name);
     View->DrawSecondDeque(SecondDeque);
 }
 
-void TDequeController::PushSecondDequeBack(const QString& name) {
+void TController::PushSecondDequeBack(const QString& name) {
     SecondDeque.PushBack(name);
     View->DrawSecondDeque(SecondDeque);
 }
 
-void TDequeController::PopSecondDequeFront() {
+void TController::PopSecondDequeFront() {
     if (SecondDeque.IsEmpty()) {
         return;
     }
@@ -47,7 +47,7 @@ void TDequeController::PopSecondDequeFront() {
     View->DrawSecondDeque(SecondDeque);
 }
 
-void TDequeController::PopSecondDequeBack() {
+void TController::PopSecondDequeBack() {
     if (SecondDeque.IsEmpty()) {
         return;
     }
@@ -55,6 +55,6 @@ void TDequeController::PopSecondDequeBack() {
     View->DrawSecondDeque(SecondDeque);
 }
 
-void TDequeController::CompareDeques() {
+void TController::CompareDeques() {
     View->DrawCompareResult(FirstDeque == SecondDeque);
 }

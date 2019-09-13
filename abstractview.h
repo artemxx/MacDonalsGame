@@ -4,9 +4,9 @@
 
 #include "list.h"
 
-class TAbstractDequeView {
+class TAbstractView {
 public:
-    virtual ~TAbstractDequeView() = default;
+    virtual ~TAbstractView() = default;
 
     virtual void DrawFirstDeque(const TBiDirectionalList<QString>& deque) = 0;
     virtual void DrawSecondDeque(const TBiDirectionalList<QString>& deque) = 0;
