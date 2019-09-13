@@ -1,6 +1,7 @@
+#include <QApplication>
+
 #include "mainwindow.h"
 #include "test.h"
-#include <QApplication>
 
 int main(int argc, char *argv[]) {
     TestAll();

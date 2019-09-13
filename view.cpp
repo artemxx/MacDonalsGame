@@ -1,8 +1,7 @@
+#include <QVector>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-#include <QDebug>
-#include <QVector>
 
 TMainWindow::TMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -107,7 +106,6 @@ void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
 
 void TMainWindow::DrawCompareResult(bool equal) {
     QPalette palette = ComparisonButton->palette();
-    qDebug() << palette;
     if (equal) {
         palette.setColor(QPalette::Button, Qt::green);
     } else {

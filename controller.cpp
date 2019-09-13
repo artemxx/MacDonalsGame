@@ -1,6 +1,4 @@
 #include "dequecontroller.h"
-#include <stdexcept>
-#include <QDebug>
 
 TDequeController::TDequeController(TAbstractDequeView* view)
     : View(view) {}
@@ -58,6 +56,5 @@ void TDequeController::PopSecondDequeBack() {
 }
 
 void TDequeController::CompareDeques() {
-    qDebug() << FirstDeque.GetSize() << " " << SecondDeque.GetSize();
     View->DrawCompareResult(FirstDeque == SecondDeque);
 }
