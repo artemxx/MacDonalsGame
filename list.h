@@ -129,7 +129,7 @@ protected:
     TNode* First;
     TNode* Last;
 
-    int Size;
+    int Size = 0;
 
     void InsertBefore(TNode* existingNode, TNode* newNode);
     void InsertAfter(TNode* existingNode, TNode* newNode);
@@ -333,7 +333,7 @@ bool operator==(const TBiDirectionalList<T>& lhs, const TBiDirectionalList<T>& r
         ++lhsIt;
         ++rhsIt;
     }
-    return lhsIt == rhs.end();
+    return lhsIt == lhs.end();
 }
 
 template<typename T>

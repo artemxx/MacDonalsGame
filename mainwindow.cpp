@@ -15,14 +15,15 @@ TMainWindow::TMainWindow(QWidget *parent)
     , RightBackServeButton(new QPushButton("Обслужить с конца\n(Я.Еда)"))
     , LeftFrontServeButton(new QPushButton("Обслужить с начала"))
     , RightFrontServeButton(new QPushButton("Обслужить с начала"))
-    , LeftTextInput(new QLineEdit())
-    , RightTextInput(new QLineEdit())
+    , LeftTextInput(new QLineEdit(NConstants::GetRandomName()))
+    , RightTextInput(new QLineEdit(NConstants::GetRandomName()))
     , ComparisonButton(new QPushButton("Сравнить очереди"))
     , AddClientFrontLeftButton(new QPushButton("Мне только спросить"))
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
     , AddClientBackRightButton(new QPushButton("Встать в конец"))
-    , Labels(MAX_DISPLAYED_COUNT)
+    , LeftLabels(NConstants::MAX_DISPLAYED_COUNT)
+    , RightLabels(NConstants::MAX_DISPLAYED_COUNT)
     , Layout(new QGridLayout())
     , Controller(new TDequeController(this))
 {
@@ -37,28 +38,27 @@ TMainWindow::TMainWindow(QWidget *parent)
 
     connect(LeftTextInput, &QLineEdit::returnPressed, [&](){
         Controller->PushFirstDequeFront(LeftTextInput->text());
-        // TODO: remove this .....uck
-        LeftTextInput->setText("");
+        SetRandomName(LeftTextInput);
     });
     connect(RightTextInput, &QLineEdit::returnPressed, [&](){
-        static int cnt = 0;
-        qDebug() << "Kekt message #" << ++cnt;
+        Controller->PushSecondDequeFront(RightTextInput->text());
+        SetRandomName(RightTextInput);
     });
     connect(AddClientFrontLeftButton, &QPushButton::clicked, [&](){
-        static int cnt = 0;
-        qDebug() << "Test message #" << ++cnt;
+        Controller->PushFirstDequeFront(LeftTextInput->text());
+        SetRandomName(LeftTextInput);
     });
     connect(AddClientFrontRightButton, &QPushButton::clicked, [&](){
-        static int cnt = 0;
-        qDebug() << "Test message #" << ++cnt;
+        Controller->PushSecondDequeFront(RightTextInput->text());
+        SetRandomName(RightTextInput);
     });
     connect(AddClientBackLeftButton, &QPushButton::clicked, [&](){
-        static int cnt = 0;
-        qDebug() << "Test message #" << ++cnt;
+        Controller->PushFirstDequeBack(LeftTextInput->text());
+        SetRandomName(LeftTextInput);
     });
     connect(AddClientBackRightButton, &QPushButton::clicked, [&](){
-        static int cnt = 0;
-        qDebug() << "Test message #" << ++cnt;
+        Controller->PushSecondDequeBack(LeftTextInput->text());
+        SetRandomName(RightTextInput);
     });
     connect(ComparisonButton, &QPushButton::clicked, [&](){
        Controller->CompareDeques();
@@ -70,27 +70,49 @@ TMainWindow::~TMainWindow() {
     delete Controller;
 }
 
-void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
-{
-    DrawFirstDeque(deque);
-}
-
-void TMainWindow::DrawCompareResult(bool result)
-{
-    DrawFirstDeque({});
-}
-
 void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
-    for (auto& label : Labels) {
+    // TODO: just clear?
+    for (auto& label : LeftLabels) {
         label->setText("");
     }
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
-    for (; ++displayedCount <= MAX_DISPLAYED_COUNT && it.IsValid(); ++it) {
-        Labels[displayedCount - 1]->setText(*it);
+    for (; ++displayedCount <= LeftLabels.size() && it.IsValid(); ++it) {
+        LeftLabels[displayedCount - 1]->setText(*it);
     }
 
     // TODO: what is it
     // repaint();
 }
+
+// TODO: more wise name, not result
+void TMainWindow::DrawCompareResult(bool result) {
+    QPalette palette = ComparisonButton->palette();
+    if (result) {
+        palette.setColor(QPalette::Button, Qt::green);
+    } else {
+        palette.setColor(QPalette::Button, Qt::red);
+    }
+
+    qDebug() << result;
+    ComparisonButton->setPalette(palette);
+}
+
+void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
+{
+    // TODO: just clear?
+    for (auto& label : RightLabels) {
+        label->setText("");
+    }
+
+    int displayedCount = 0;
+    typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
+    for (; ++displayedCount <= RightLabels.size() && it.IsValid(); ++it) {
+        RightLabels[displayedCount - 1]->setText(*it);
+    }
+
+    // TODO: what is it
+    // repaint();
+}
+

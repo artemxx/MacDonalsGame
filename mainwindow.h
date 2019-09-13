@@ -8,6 +8,7 @@
 #include <QLCDNumber>
 #include <QDebug>
 #include <QStyle>
+#include <QRandomGenerator>
 
 #include "list.h"
 #include "dequecontroller.h"
@@ -16,6 +17,31 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+namespace NConstants {
+    constexpr auto MAX_DISPLAYED_COUNT = 8;
+
+    const QVector<QString> RandomNames = {
+        "Dragon-fly",
+        "Artemx",
+        "Kigan",
+        "Jesus",
+        "MCDavidas",
+        "Kefaa",
+        "Renkens",
+        "Dasfex",
+        "Tigerrrrr",
+        "Tranvick",
+        "Vitonka",
+        "Chmel_Tolstiy"
+    };
+
+    static QRandomGenerator gen(2020);
+    static QString GetRandomName() {
+        const int ind = gen() % RandomNames.size();
+        return RandomNames[ind];
+    }
+} // NConstants
 
 class TMainWindow : public QMainWindow, public TAbstractDequeView {
     Q_OBJECT
@@ -61,9 +87,12 @@ private:
         AddWidget(AddClientBackLeftButton, 6, 0);
         AddWidget(AddClientBackRightButton, 6, 4);
 
-        for (int i = 0; i < MAX_DISPLAYED_COUNT; ++i) {
-            Labels[i] = new QLabel();
-            AddWidget(Labels[i], i + 4, 1);
+        for (int i = 0; i < NConstants::MAX_DISPLAYED_COUNT; ++i) {
+            LeftLabels[i] = new QLabel();
+            RightLabels[i] = new QLabel();
+
+            AddWidget(LeftLabels[i], i + 4, 1, Qt::AlignCenter);
+            AddWidget(RightLabels[i], i + 4, 3, Qt::AlignCenter);
         }
 
         for (int i = 0; i <= 11; ++i) {
@@ -74,8 +103,11 @@ private:
         }
     }
 
+    static void SetRandomName(QLineEdit* widget) {
+        widget->setText(NConstants::GetRandomName());
+    }
+
 private:
-    static constexpr auto MAX_DISPLAYED_COUNT = 8;
 
     Ui::MainWindow *Ui;
 
@@ -100,7 +132,8 @@ private:
     QPushButton* AddClientBackLeftButton;
     QPushButton* AddClientBackRightButton;
 
-    QVector<QLabel*> Labels;
+    QVector<QLabel*> LeftLabels;
+    QVector<QLabel*> RightLabels;
 
     QGridLayout* Layout;
 
