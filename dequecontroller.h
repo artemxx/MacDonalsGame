@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include <QString>
+#include <memory>
+
 #include "abstractdequecontroller.h"
 #include "abstractdequeview.h"
 

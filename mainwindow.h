@@ -6,15 +6,13 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QLCDNumber>
-#include <QDebug>
 #include <QStyle>
-
 #include <random>
 #include <chrono>
 
-#include "list.h"
-#include "dequecontroller.h"
 #include "abstractdequeview.h"
+#include "dequecontroller.h"
+#include "list.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

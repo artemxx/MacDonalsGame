@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include <QString>
+#include <memory>
+
 #include "list.h"
 
 class TAbstractDequeController {
