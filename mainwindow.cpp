@@ -36,6 +36,21 @@ TMainWindow::TMainWindow(QWidget *parent)
     widget->setLayout(Layout);
     setCentralWidget(widget);
 
+    // Serve client buttons
+    connect(LeftBackServeButton, &QPushButton::clicked, [&](){
+        Controller->PopFirstDequeBack();
+    });
+    connect(RightBackServeButton, &QPushButton::clicked, [&](){
+        Controller->PopSecondDequeBack();
+    });
+    connect(LeftFrontServeButton, &QPushButton::clicked, [&](){
+        Controller->PopFirstDequeFront();
+    });
+    connect(RightFrontServeButton, &QPushButton::clicked, [&](){
+        Controller->PopSecondDequeFront();
+    });
+
+    // Input buttons
     connect(LeftTextInput, &QLineEdit::returnPressed, [&](){
         Controller->PushFirstDequeFront(LeftTextInput->text());
         SetRandomName(LeftTextInput);
@@ -44,6 +59,13 @@ TMainWindow::TMainWindow(QWidget *parent)
         Controller->PushSecondDequeFront(RightTextInput->text());
         SetRandomName(RightTextInput);
     });
+
+    // Comparison button
+    connect(ComparisonButton, &QPushButton::clicked, [&](){
+       Controller->CompareDeques();
+    });
+
+    // Add client buttons
     connect(AddClientFrontLeftButton, &QPushButton::clicked, [&](){
         Controller->PushFirstDequeFront(LeftTextInput->text());
         SetRandomName(LeftTextInput);
@@ -57,11 +79,8 @@ TMainWindow::TMainWindow(QWidget *parent)
         SetRandomName(LeftTextInput);
     });
     connect(AddClientBackRightButton, &QPushButton::clicked, [&](){
-        Controller->PushSecondDequeBack(LeftTextInput->text());
+        Controller->PushSecondDequeBack(RightTextInput->text());
         SetRandomName(RightTextInput);
-    });
-    connect(ComparisonButton, &QPushButton::clicked, [&](){
-       Controller->CompareDeques();
     });
 }
 

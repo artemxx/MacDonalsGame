@@ -120,16 +120,20 @@ private:
     QLCDNumber* LeftNumber;
     QLCDNumber* RightNumber;
 
+    // Serve client buttons
     QPushButton* LeftBackServeButton;
     QPushButton* RightBackServeButton;
     QPushButton* LeftFrontServeButton;
     QPushButton* RightFrontServeButton;
 
+    // Input buttons
     QLineEdit* LeftTextInput;
     QLineEdit* RightTextInput;
 
+    // Comparison button
     QPushButton* ComparisonButton;
 
+    // Add client buttons
     QPushButton* AddClientFrontLeftButton;
     QPushButton* AddClientFrontRightButton;
     QPushButton* AddClientBackLeftButton;
