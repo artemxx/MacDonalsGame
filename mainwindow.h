@@ -10,22 +10,24 @@
 #include <QStyle>
 
 #include "list.h"
+#include "dequecontroller.h"
+#include "abstractdequeview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class TMainWindow : public QMainWindow {
+class TMainWindow : public QMainWindow, public TAbstractDequeView {
     Q_OBJECT
 
 public:
     TMainWindow(QWidget* parent = nullptr);
-    ~TMainWindow();
+    ~TMainWindow() override;
 
-    void DrawFirstDeque(const TBiDirectionalList<QString>& deque) {}
-    void DrawSecondDeque(const TBiDirectionalList<QString>& deque) {}
+    void DrawFirstDeque(const TBiDirectionalList<QString>& deque) override;
+    void DrawSecondDeque(const TBiDirectionalList<QString>& deque) override;
 
-    void DrawCompareResult(bool result) {}
+    void DrawCompareResult(bool result) override;
 
 private:
     void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
@@ -59,6 +61,10 @@ private:
         AddWidget(AddClientBackLeftButton, 6, 0);
         AddWidget(AddClientBackRightButton, 6, 4);
 
+        for (int i = 0; i < MAX_DISPLAYED_COUNT; ++i) {
+            AddWidget(Labels[i], i + 4, 1);
+        }
+
         for (int i = 0; i <= 6; ++i) {
             Layout->setRowStretch(i, (i != 1) ? 1 : 2);
         }
@@ -68,7 +74,8 @@ private:
     }
 
 private:
-    static constexpr auto MAX_DISPLAYED_COUNT = 8;
+    static constexpr auto MAX_DISPLAYED_COUNT = 3;
+
     Ui::MainWindow *Ui;
 
     QLabel* LeftLabel;
@@ -92,5 +99,9 @@ private:
     QPushButton* AddClientBackLeftButton;
     QPushButton* AddClientBackRightButton;
 
+    QVector<QLabel*> Labels;
+
     QGridLayout* Layout;
+
+    TDequeController* Controller;
 };

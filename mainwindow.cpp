@@ -11,10 +11,10 @@ TMainWindow::TMainWindow(QWidget *parent)
     , RightLabel(new QLabel("В очереди:"))
     , LeftNumber(new QLCDNumber())
     , RightNumber(new QLCDNumber())
-    , LeftBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
-    , RightBackServeButton(new QPushButton("Обслужить с конца (Я.Еда)"))
-    , LeftFrontServeButton(new QPushButton("Обслужить"))
-    , RightFrontServeButton(new QPushButton("Обслужить"))
+    , LeftBackServeButton(new QPushButton("Обслужить с конца\n(Я.Еда)"))
+    , RightBackServeButton(new QPushButton("Обслужить с конца\n(Я.Еда)"))
+    , LeftFrontServeButton(new QPushButton("Обслужить с начала"))
+    , RightFrontServeButton(new QPushButton("Обслужить с начала"))
     , LeftTextInput(new QLineEdit())
     , RightTextInput(new QLineEdit())
     , ComparisonButton(new QPushButton("Сравнить очереди"))
@@ -22,7 +22,9 @@ TMainWindow::TMainWindow(QWidget *parent)
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
     , AddClientBackRightButton(new QPushButton("Встать в конец"))
+    , Labels(MAX_DISPLAYED_COUNT, new QLabel())
     , Layout(new QGridLayout())
+    , Controller(new TDequeController(this))
 {
     Ui->setupUi(this);
     setMinimumSize(1000, 700);
@@ -34,9 +36,9 @@ TMainWindow::TMainWindow(QWidget *parent)
     setCentralWidget(widget);
 
     connect(LeftTextInput, &QLineEdit::returnPressed, [&](){
-        static int cnt = 0;
-        qDebug() << "Test message #" << ++cnt;
-        LeftLabel->setText("");
+        Controller->PushFirstDequeFront(LeftTextInput->text());
+        // TODO: remove this .....uck
+        LeftTextInput->setText("");
     });
     connect(RightTextInput, &QLineEdit::returnPressed, [&](){
         static int cnt = 0;
@@ -62,19 +64,29 @@ TMainWindow::TMainWindow(QWidget *parent)
 
 TMainWindow::~TMainWindow() {
     delete Ui;
+    delete Controller;
 }
 
-/*
+void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
+{
+
+}
+
+void TMainWindow::DrawCompareResult(bool result)
+{
+
+}
+
 void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
-    QVector<QLabel*> labels(MAX_DISPLAYED_COUNT);
-    for (auto& label : labels) {
-        label = new QLabel();
-    }
+//    for (auto& label : Labels) {
+//        label->setText("");
+//    }
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
-    while (++displayedCount <= MAX_DISPLAYED_COUNT && it != deque.end()) {
-        labels[displayedCount - 1]->setText(*it);
+    for (; ++displayedCount <= MAX_DISPLAYED_COUNT && it.IsValid(); ++it) {
+        Labels[displayedCount - 1]->setText(*it);
+        qDebug() << *it;
     }
+    qDebug() << "-------";
 }
-*/

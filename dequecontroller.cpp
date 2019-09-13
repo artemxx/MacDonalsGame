@@ -1,7 +1,7 @@
 #include "dequecontroller.h"
 #include <stdexcept>
 
-TDequeController::TDequeController(TMainWindow* view)
+TDequeController::TDequeController(TAbstractDequeView* view)
     : View(view) {}
 
 void TDequeController::PushFirstDequeFront(const QString& name) {
