@@ -10,8 +10,8 @@
 #include <random>
 #include <chrono>
 
-#include "abstractdequeview.h"
-#include "dequecontroller.h"
+#include "abstractview.h"
+#include "controller.h"
 #include "list.h"
 
 QT_BEGIN_NAMESPACE
@@ -48,12 +48,12 @@ namespace NConstants {
     }
 } // NConstants
 
-class TMainWindow : public QMainWindow, public TAbstractDequeView {
+class TView : public QMainWindow, public TAbstractView {
     Q_OBJECT
 
 public:
-    TMainWindow(QWidget* parent = nullptr);
-    ~TMainWindow() override;
+    TView(QWidget* parent = nullptr);
+    ~TView() override;
 
     void DrawFirstDeque(const TBiDirectionalList<QString>& deque) override;
     void DrawSecondDeque(const TBiDirectionalList<QString>& deque) override;
@@ -148,5 +148,5 @@ private:
 
     QGridLayout* Layout;
 
-    TDequeController* Controller;
+    TController* Controller;
 };

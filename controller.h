@@ -3,13 +3,13 @@
 #include <QString>
 #include <memory>
 
-#include "abstractdequecontroller.h"
-#include "abstractdequeview.h"
+#include "abstractcontroller.h"
+#include "abstractview.h"
 
-class TDequeController : public TAbstractDequeController {
+class TController : public TAbstractController {
 public:
-     explicit TDequeController(TAbstractDequeView* view);
-     ~TDequeController() override = default;
+     explicit TController(TAbstractView* view);
+     ~TController() override = default;
 
     void PushFirstDequeFront(const QString& name) override;
     void PushFirstDequeBack(const QString& name) override;
@@ -24,5 +24,5 @@ public:
     void CompareDeques() override;
 
 protected:
-    TAbstractDequeView* View;
+    TAbstractView* View;
 };

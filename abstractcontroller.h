@@ -5,9 +5,9 @@
 
 #include "list.h"
 
-class TAbstractDequeController {
+class TAbstractController {
 public:
-    virtual ~TAbstractDequeController() = default;
+    virtual ~TAbstractController() = default;
 
     virtual void PushFirstDequeFront(const QString& name) = 0;
     virtual void PushFirstDequeBack(const QString& name) = 0;
