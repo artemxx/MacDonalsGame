@@ -22,7 +22,7 @@ TMainWindow::TMainWindow(QWidget *parent)
     , AddClientFrontRightButton(new QPushButton("Мне только спросить"))
     , AddClientBackLeftButton(new QPushButton("Встать в конец"))
     , AddClientBackRightButton(new QPushButton("Встать в конец"))
-    , Labels(MAX_DISPLAYED_COUNT, new QLabel())
+    , Labels(MAX_DISPLAYED_COUNT)
     , Layout(new QGridLayout())
     , Controller(new TDequeController(this))
 {
@@ -60,6 +60,9 @@ TMainWindow::TMainWindow(QWidget *parent)
         static int cnt = 0;
         qDebug() << "Test message #" << ++cnt;
     });
+    connect(ComparisonButton, &QPushButton::clicked, [&](){
+       Controller->CompareDeques();
+    });
 }
 
 TMainWindow::~TMainWindow() {
@@ -69,24 +72,25 @@ TMainWindow::~TMainWindow() {
 
 void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
 {
-
+    DrawFirstDeque(deque);
 }
 
 void TMainWindow::DrawCompareResult(bool result)
 {
-
+    DrawFirstDeque({});
 }
 
 void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
-//    for (auto& label : Labels) {
-//        label->setText("");
-//    }
+    for (auto& label : Labels) {
+        label->setText("");
+    }
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
     for (; ++displayedCount <= MAX_DISPLAYED_COUNT && it.IsValid(); ++it) {
         Labels[displayedCount - 1]->setText(*it);
-        qDebug() << *it;
     }
-    qDebug() << "-------";
+
+    // TODO: what is it
+    // repaint();
 }

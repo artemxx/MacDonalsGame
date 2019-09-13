@@ -62,10 +62,11 @@ private:
         AddWidget(AddClientBackRightButton, 6, 4);
 
         for (int i = 0; i < MAX_DISPLAYED_COUNT; ++i) {
+            Labels[i] = new QLabel();
             AddWidget(Labels[i], i + 4, 1);
         }
 
-        for (int i = 0; i <= 6; ++i) {
+        for (int i = 0; i <= 11; ++i) {
             Layout->setRowStretch(i, (i != 1) ? 1 : 2);
         }
         for (int i = 0; i <= 4; ++i) {
@@ -74,7 +75,7 @@ private:
     }
 
 private:
-    static constexpr auto MAX_DISPLAYED_COUNT = 3;
+    static constexpr auto MAX_DISPLAYED_COUNT = 8;
 
     Ui::MainWindow *Ui;
 
