@@ -8,7 +8,9 @@
 #include <QLCDNumber>
 #include <QDebug>
 #include <QStyle>
-#include <QRandomGenerator>
+
+#include <random>
+#include <chrono>
 
 #include "list.h"
 #include "dequecontroller.h"
@@ -39,9 +41,11 @@ namespace NConstants {
         "Progmatic"
     };
 
-    static QRandomGenerator gen(2020);
+    static std::mt19937 twister(std::chrono::steady_clock::now().time_since_epoch().count());
+    static std::uniform_int_distribution<int> gen(0, RandomNames.size() - 1);
+
     static QString GetRandomName() {
-        const int ind = gen() % RandomNames.size();
+        const int ind = gen(twister);
         return RandomNames[ind];
     }
 } // NConstants
