@@ -9,12 +9,12 @@
 
 template<typename T>
 class TBiDirectionalList {
-  protected:
+protected:
     struct TNode;
 
-  public:
+public:
     class TIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
-      public:
+    public:
         T& operator*() const;
         T* operator->() const;
 
@@ -29,7 +29,7 @@ class TBiDirectionalList {
 
         bool IsValid() const;
 
-      private:
+    private:
         friend class TBiDirectionalList;
 
         const TBiDirectionalList* const List;
@@ -41,7 +41,7 @@ class TBiDirectionalList {
 
     class TConstIterator :
         public std::iterator<std::bidirectional_iterator_tag, T> {
-      public:
+    public:
         const T& operator*() const;
         const T* operator->() const;
 
@@ -56,7 +56,7 @@ class TBiDirectionalList {
 
         bool IsValid() const;
 
-      private:
+    private:
         friend class TBiDirectionalList;
 
         const TBiDirectionalList* const List;
@@ -110,7 +110,7 @@ class TBiDirectionalList {
 
     int GetSize() const;
 
-  protected:
+protected:
     struct TNode {
         explicit TNode(const T& value)
             : Value(value), NextNode(nullptr), PreviousNode(nullptr) {

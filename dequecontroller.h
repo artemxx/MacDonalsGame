@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 
 class TDequeController : public TAbstractDequeController {
- public:
+public:
      explicit TDequeController(TMainWindow* view);
      ~TDequeController() override = default;
 
@@ -20,6 +20,6 @@ class TDequeController : public TAbstractDequeController {
 
     void CompareDeques() override;
 
- protected:
+protected:
     TMainWindow* View;
 };
