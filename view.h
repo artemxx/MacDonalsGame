@@ -130,8 +130,34 @@ private:
     }
 
 private:
+    struct TImages {
+        QLabel* CreateLabel(const QString& image) {
+            QPixmap pixmap(image);
+            QLabel* label = new QLabel();
+            label->setPixmap(pixmap);
+            label->setScaledContents(true);
 
-    Ui::MainWindow *Ui;
+            return label;
+        }
+
+        TImages(const QString& dragonFly, const QString& artemx, const QString& mac,
+                const QString& kfc, const QString& yEda, const QString& kroshka)
+            : DragonFly(CreateLabel(dragonFly))
+            , Artemx(CreateLabel(artemx))
+            , Mac(CreateLabel(mac))
+            , Kfc(CreateLabel(kfc))
+            , YEda(CreateLabel(yEda))
+            , Kroshka(CreateLabel(kroshka))
+        {
+        }
+
+        QLabel* DragonFly;
+        QLabel* Artemx;
+        QLabel* Mac;
+        QLabel* Kfc;
+        QLabel* YEda;
+        QLabel* Kroshka;
+    };
 
     QLabel* LeftLabel;
     QLabel* RightLabel;
@@ -163,34 +189,7 @@ private:
 
     QGridLayout* Layout;
 
-    struct TImages {
-        QLabel* CreateLabel(const QString& image) {
-            QPixmap pixmap(image);
-            QLabel* label = new QLabel();
-            label->setPixmap(pixmap);
-            label->setScaledContents(true);
-
-            return label;
-        }
-
-        TImages(const QString& dragonFly, const QString& artemx, const QString& mac,
-                const QString& kfc, const QString& yEda, const QString& kroshka)
-            : DragonFly(CreateLabel(dragonFly))
-            , Artemx(CreateLabel(artemx))
-            , Mac(CreateLabel(mac))
-            , Kfc(CreateLabel(kfc))
-            , YEda(CreateLabel(yEda))
-            , Kroshka(CreateLabel(kroshka))
-        {
-        }
-
-        QLabel* DragonFly;
-        QLabel* Artemx;
-        QLabel* Mac;
-        QLabel* Kfc;
-        QLabel* YEda;
-        QLabel* Kroshka;
-    } Images;
+    TImages Images;
 
     TController* Controller;
 };

@@ -5,7 +5,6 @@
 
 TView::TView(QWidget *parent)
     : QMainWindow(parent)
-    , Ui(new Ui::MainWindow)
     , LeftLabel(new QLabel("В очереди:"))
     , RightLabel(new QLabel("В очереди:"))
     , LeftNumber(new QLCDNumber())
@@ -28,7 +27,6 @@ TView::TView(QWidget *parent)
              ":/images/kfc.jpg", ":/images/eda.jpg", ":/images/kroshka.jpg")
     , Controller(new TController(this))
 {
-    Ui->setupUi(this);
     setMinimumSize(1000, 700);
 
     AddWidgets();
@@ -86,13 +84,12 @@ TView::TView(QWidget *parent)
 }
 
 TView::~TView() {
-    delete Ui;
     delete Controller;
 }
 
 void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
     for (auto& label : LeftLabels) {
-        label->setText("");
+        label->clear();
     }
 
     LeftNumber->display(deque.GetSize());
@@ -117,10 +114,9 @@ void TView::DrawCompareResult(bool equal) {
     ComparisonButton->setPalette(palette);
 }
 
-void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
-{
+void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque) {
     for (auto& label : RightLabels) {
-        label->setText("");
+        label->clear();
     }
 
     RightNumber->display(deque.GetSize());
@@ -134,8 +130,7 @@ void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
     DiscardCompareButton();
 }
 
-void TView::DiscardCompareButton()
-{
+void TView::DiscardCompareButton() {
     QPalette palette = ComparisonButton->palette();
     ComparisonButton->setPalette(ComparisonButton->style()->standardPalette());
 }
