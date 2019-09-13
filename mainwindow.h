@@ -33,7 +33,10 @@ namespace NConstants {
         "Tigerrrrr",
         "Tranvick",
         "Vitonka",
-        "Chmel_Tolstiy"
+        "Chmel_Tolstiy",
+        "Fivut",
+        "Sind",
+        "Progmatic"
     };
 
     static QRandomGenerator gen(2020);
