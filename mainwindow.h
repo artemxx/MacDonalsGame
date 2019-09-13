@@ -36,7 +36,14 @@ namespace NConstants {
         "Chmel_Tolstiy",
         "Fivut",
         "Sind",
-        "Progmatic"
+        "Progmatic",
+        "Gepardo",
+        "Melnik",
+        "Aleex",
+        "Magneet",
+        "Fedosik",
+        "LamaMarine",
+        "Sigismundych"
     };
 
     static std::mt19937 twister(std::chrono::steady_clock::now().time_since_epoch().count());
@@ -63,13 +70,14 @@ public:
 private:
     void DiscardCompareButton();
 
-    void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
+    void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag
+                   = Qt::AlignmentFlag(), int sx = 1, int sy = 1) {
         static const auto itemSizePolicy
             = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         widget->setSizePolicy(itemSizePolicy);
 
-        Layout->addWidget(widget, x, y, flag);
+        Layout->addWidget(widget, x, y, sx, sy, flag);
     }
 
     void AddWidgets() {
@@ -101,6 +109,13 @@ private:
             AddWidget(LeftLabels[i], i + 4, 1, Qt::AlignCenter);
             AddWidget(RightLabels[i], i + 4, 3, Qt::AlignCenter);
         }
+
+        AddWidget(Images.DragonFly, 2, 0, Qt::AlignCenter, 2, 1);
+        AddWidget(Images.Artemx, 2, 4, Qt::AlignCenter, 2, 1);
+        AddWidget(Images.Mac, 0, 1, Qt::AlignCenter, 2, 1);
+        AddWidget(Images.Kfc, 0, 3, Qt::AlignCenter, 2, 1);
+        AddWidget(Images.YEda, 0, 2, Qt::AlignCenter, 2, 1);
+        AddWidget(Images.Kroshka, 2, 2, Qt::AlignCenter, 2, 1);
 
         for (int i = 0; i <= 11; ++i) {
             Layout->setRowStretch(i, (i != 1) ? 1 : 2);
@@ -147,6 +162,35 @@ private:
     QVector<QLabel*> RightLabels;
 
     QGridLayout* Layout;
+
+    struct TImages {
+        QLabel* CreateLabel(const QString& image) {
+            QPixmap pixmap(image);
+            QLabel* label = new QLabel();
+            label->setPixmap(pixmap);
+            label->setScaledContents(true);
+
+            return label;
+        }
+
+        TImages(const QString& dragonFly, const QString& artemx, const QString& mac,
+                const QString& kfc, const QString& yEda, const QString& kroshka)
+            : DragonFly(CreateLabel(dragonFly))
+            , Artemx(CreateLabel(artemx))
+            , Mac(CreateLabel(mac))
+            , Kfc(CreateLabel(kfc))
+            , YEda(CreateLabel(yEda))
+            , Kroshka(CreateLabel(kroshka))
+        {
+        }
+
+        QLabel* DragonFly;
+        QLabel* Artemx;
+        QLabel* Mac;
+        QLabel* Kfc;
+        QLabel* YEda;
+        QLabel* Kroshka;
+    } Images;
 
     TDequeController* Controller;
 };

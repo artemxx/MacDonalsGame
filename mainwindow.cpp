@@ -24,6 +24,8 @@ TMainWindow::TMainWindow(QWidget *parent)
     , LeftLabels(NConstants::MAX_DISPLAYED_COUNT)
     , RightLabels(NConstants::MAX_DISPLAYED_COUNT)
     , Layout(new QGridLayout())
+    , Images(":/images/dragonfly.jpg", ":/images/artemxx.jpg", ":/images/mac.jpeg",
+             ":/images/kfc.jpg", ":/images/eda.jpg", ":/images/kroshka.jpg")
     , Controller(new TDequeController(this))
 {
     Ui->setupUi(this);
