@@ -63,6 +63,8 @@ public:
     void DrawCompareResult(bool result) override;
 
 private:
+    void DiscardCompareButton();
+
     void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
         static const auto itemSizePolicy
             = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

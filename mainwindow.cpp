@@ -75,6 +75,8 @@ void TMainWindow::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
         label->setText("");
     }
 
+    LeftNumber->display(deque.GetSize());
+
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
     for (; ++displayedCount <= LeftLabels.size() && it.IsValid(); ++it) {
@@ -101,6 +103,8 @@ void TMainWindow::DrawSecondDeque(const TBiDirectionalList<QString> &deque)
     for (auto& label : RightLabels) {
         label->setText("");
     }
+
+    RightNumber->display(deque.GetSize());
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
