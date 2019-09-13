@@ -1,4 +1,5 @@
 # MacDonalsGame
 This is very cool game on QT
 
-![Screenshot](Screenshot 1.png)
+![Screenshot](screenshot_1.png)
+![Screenshot](screenshot_2.png)
