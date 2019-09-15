@@ -20,8 +20,4 @@ public:
     virtual void PopSecondDequeBack() = 0;
 
     virtual void CompareDeques() = 0;
-
-protected:
-    TBiDirectionalList<QString> FirstDeque;
-    TBiDirectionalList<QString> SecondDeque;
 };
