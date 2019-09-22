@@ -34,8 +34,8 @@ public:
 protected:
     TAbstractView* View;
 
-    TBiDirectionalList<QString>::TIterator FirstIterator;
-    TBiDirectionalList<QString>::TIterator SecondIterator;
     TBiDirectionalList<QString> FirstDeque;
     TBiDirectionalList<QString> SecondDeque;
+    TBiDirectionalList<QString>::TIterator FirstIterator;
+    TBiDirectionalList<QString>::TIterator SecondIterator;
 };

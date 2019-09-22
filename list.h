@@ -34,7 +34,7 @@ public:
     private:
         friend class TBiDirectionalList;
 
-        const TBiDirectionalList* const List;
+        const TBiDirectionalList* List;
         TNode* Node;
 
         TIterator(const TBiDirectionalList* const list, TNode* node)
@@ -65,7 +65,7 @@ public:
         friend class TBiDirectionalList;
         friend class TIterator;
 
-        const TBiDirectionalList* const List;
+        const TBiDirectionalList* List;
         const TNode* Node;
 
         TConstIterator(const TBiDirectionalList* const list, TNode* node)
@@ -200,8 +200,8 @@ const typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::TIterator
 
 template<typename T>
 typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::operator=(const TBiDirectionalList::TIterator& other) {
-    List == other.List;
-    Node == other.Node;
+    List = other.List;
+    Node = other.Node;
     return *this;
 }
 

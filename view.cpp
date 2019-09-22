@@ -92,6 +92,34 @@ TView::TView(QWidget *parent)
         Controller->PushSecondDequeBack(RightTextInput->text());
         SetRandomName(RightTextInput);
     });
+
+    // Left iterator buttons
+    connect(LeftNextIteratorButton, &QPushButton::clicked, [&](){
+        Controller->MoveForwardFirstIterator();
+    });
+    connect(LeftPrevIteratorButton, &QPushButton::clicked, [&](){
+        Controller->MoveBackwardFirstIterator();
+    });
+    connect(LeftNameChangeButton, &QPushButton::clicked, [&](){
+        Controller->ChangeFirstName(LeftIteratorTextInput->text());
+    });
+    connect(LeftIteratorTextInput, &QLineEdit::returnPressed, [&](){
+        Controller->ChangeFirstName(LeftIteratorTextInput->text());
+    });
+
+    // Right iterator buttons
+    connect(RightNextIteratorButton, &QPushButton::clicked, [&](){
+        Controller->MoveForwardSecondIterator();
+    });
+    connect(RightPrevIteratorButton, &QPushButton::clicked, [&](){
+        Controller->MoveBackwardSecondIterator();
+    });
+    connect(RightNameChangeButton, &QPushButton::clicked, [&](){
+        Controller->ChangeSecondName(RightIteratorTextInput->text());
+    });
+    connect(RightIteratorTextInput, &QLineEdit::returnPressed, [&](){
+        Controller->ChangeSecondName(RightIteratorTextInput->text());
+    });
 }
 
 TView::~TView() {
