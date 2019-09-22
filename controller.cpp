@@ -116,12 +116,12 @@ void TController::MoveBackwardSecondIterator() {
 
 void TController::ChangeFirstName(const QString& name) {
     *FirstIterator = name;
-    View->DrawFirstDeque();
+    View->DrawFirstDeque(FirstDeque, FirstIterator);
 }
 
 void TController::ChangeSecondName(const QString& name) {
     *SecondIterator = name;
-    View->DrawSecondDeque();
+    View->DrawSecondDeque(SecondDeque, SecondIterator);
 }
 
 void TController::CompareDeques() {
