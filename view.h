@@ -19,7 +19,8 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 namespace NConstants {
-    constexpr auto MAX_DISPLAYED_COUNT = 8;
+    constexpr auto MAX_DISPLAYED_COUNT_DEQUE = 8;
+    constexpr auto MAX_DISPLAYED_COUNT_CROWD = 10;
 
     const QVector<QString> RandomNames = {
         "Dragon-fly",
@@ -70,8 +71,8 @@ public:
 private:
     void DiscardCompareButton();
 
-    void AddWidget(QWidget* widget, int x, int y, Qt::AlignmentFlag flag
-                   = Qt::AlignmentFlag(), int sx = 1, int sy = 1) {
+    void AddWidget(QWidget* widget, int x, int y, int sx = 1, int sy = 1,
+                   Qt::AlignmentFlag flag = Qt::AlignmentFlag()) {
         static const auto itemSizePolicy
             = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -81,47 +82,71 @@ private:
     }
 
     void AddWidgets() {
-        AddWidget(LeftLabel, 0, 0, Qt::AlignCenter);
-        AddWidget(RightLabel, 0, 4, Qt::AlignCenter);
+        AddWidget(LeftLabel, 0, 0, 1, 2, Qt::AlignCenter);
+        AddWidget(RightLabel, 0, 6, 1, 2, Qt::AlignCenter);
 
-        AddWidget(LeftNumber, 1, 0);
-        AddWidget(RightNumber, 1, 4);
+        AddWidget(LeftNumber, 1, 0, 1, 2);
+        AddWidget(RightNumber, 1, 6, 1, 2);
 
-        AddWidget(LeftBackServeButton, 2, 1);
-        AddWidget(RightBackServeButton, 2, 3);
-        AddWidget(LeftFrontServeButton, 3, 1);
-        AddWidget(RightFrontServeButton, 3, 3);
+        AddWidget(LeftBackServeButton, 2, 2);
+        AddWidget(RightBackServeButton, 2, 5);
+        AddWidget(LeftFrontServeButton, 3, 2);
+        AddWidget(RightFrontServeButton, 3, 5);
 
-        AddWidget(LeftTextInput, 4, 0);
-        AddWidget(RightTextInput, 4, 4);
+        AddWidget(LeftTextInput, 4, 0, 1, 2);
+        AddWidget(RightTextInput, 4, 6, 1, 2);
 
-        AddWidget(ComparisonButton, 4, 2);
+        AddWidget(ComparisonButton, 4, 3, 1, 2);
 
-        AddWidget(AddClientFrontLeftButton, 5, 0);
-        AddWidget(AddClientFrontRightButton, 5, 4);
-        AddWidget(AddClientBackLeftButton, 6, 0);
-        AddWidget(AddClientBackRightButton, 6, 4);
+        AddWidget(AddClientFrontLeftButton, 5, 0, 1, 2);
+        AddWidget(AddClientFrontRightButton, 5, 6, 1, 2);
+        AddWidget(AddClientBackLeftButton, 6, 0, 1, 2);
+        AddWidget(AddClientBackRightButton, 6, 6, 1, 2);
 
-        for (int i = 0; i < NConstants::MAX_DISPLAYED_COUNT; ++i) {
+        AddWidget(LeftNextIteratorButton, 8, 0);
+        AddWidget(LeftPrevIteratorButton, 8, 1);
+        AddWidget(LeftIteratorTextInput, 9, 0, 1, 2);
+        AddWidget(LeftNameChangeButton, 10, 0, 1, 2);
+
+        AddWidget(RightNextIteratorButton, 8, 6);
+        AddWidget(RightPrevIteratorButton, 8, 7);
+        AddWidget(RightIteratorTextInput, 9, 6, 1, 2);
+        AddWidget(RightNameChangeButton, 10, 6, 1, 2);
+
+        AddWidget(AddClientToCrowdButton, 6, 3);
+        AddWidget(ServeClientFromCrowdButton, 6, 4);
+
+        for (int i = 0; i < NConstants::MAX_DISPLAYED_COUNT_DEQUE; ++i) {
             LeftLabels[i] = new QLabel();
             RightLabels[i] = new QLabel();
 
-            AddWidget(LeftLabels[i], i + 4, 1, Qt::AlignCenter);
-            AddWidget(RightLabels[i], i + 4, 3, Qt::AlignCenter);
+            AddWidget(LeftLabels[i], i + 4, 2);
+            AddWidget(RightLabels[i], i + 4, 5);
         }
 
-        AddWidget(Images.DragonFly, 2, 0, Qt::AlignCenter, 2, 1);
-        AddWidget(Images.Artemx, 2, 4, Qt::AlignCenter, 2, 1);
-        AddWidget(Images.Mac, 0, 1, Qt::AlignCenter, 2, 1);
-        AddWidget(Images.Kfc, 0, 3, Qt::AlignCenter, 2, 1);
-        AddWidget(Images.YEda, 0, 2, Qt::AlignCenter, 2, 1);
-        AddWidget(Images.Kroshka, 2, 2, Qt::AlignCenter, 2, 1);
+        for (int i = 0; i < NConstants::MAX_DISPLAYED_COUNT_CROWD; ++i) {
+            CrowdLabels[i] = new QLabel();
+
+            AddWidget(CrowdLabels[i], i % 5 + 7, 3 + i / 5);
+        }
+
+        AddWidget(Images.DragonFly, 2, 0, 2, 2, Qt::AlignCenter);
+        AddWidget(Images.Artemx, 2, 6, 2, 2, Qt::AlignCenter);
+        AddWidget(Images.Mac, 0, 2, 2, 1, Qt::AlignCenter);
+        AddWidget(Images.Kfc, 0, 5, 2, 1, Qt::AlignCenter);
+        AddWidget(Images.YEda, 0, 3, 2, 2, Qt::AlignCenter);
+        AddWidget(Images.Kroshka, 2, 3, 2, 2, Qt::AlignCenter);
 
         for (int i = 0; i <= 11; ++i) {
             Layout->setRowStretch(i, (i != 1) ? 1 : 2);
         }
-        for (int i = 0; i <= 4; ++i) {
-            Layout->setColumnStretch(i, (i != 2) ? 2 : 3);
+        for (int i = 0; i <= 7; ++i) {
+            int stretch = 2;
+            if (i <= 1 || i >= 6) {
+                stretch = 1;
+            }
+
+            Layout->setColumnStretch(i, stretch);
         }
     }
 
@@ -184,12 +209,30 @@ private:
     QPushButton* AddClientBackLeftButton;
     QPushButton* AddClientBackRightButton;
 
+    // Left iterator buttons
+    QPushButton* LeftNextIteratorButton;
+    QPushButton* LeftPrevIteratorButton;
+    QLineEdit* LeftIteratorTextInput;
+    QPushButton* LeftNameChangeButton;
+
+    // Right iterator buttons
+    QPushButton* RightNextIteratorButton;
+    QPushButton* RightPrevIteratorButton;
+    QLineEdit* RightIteratorTextInput;
+    QPushButton* RightNameChangeButton;
+
+    // Crowd control buttons
+    QPushButton* AddClientToCrowdButton;
+    QPushButton* ServeClientFromCrowdButton;
+
+    // People names
     QVector<QLabel*> LeftLabels;
     QVector<QLabel*> RightLabels;
-
-    QGridLayout* Layout;
+    QVector<QLabel*> CrowdLabels;
 
     TImages Images;
+
+    QGridLayout* Layout;
 
     TController* Controller;
 };
