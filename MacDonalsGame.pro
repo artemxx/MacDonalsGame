@@ -22,6 +22,7 @@ SOURCES += \
     controller.cpp \
 
 HEADERS += \
+    abstractvisitor.h \
     list.h \
     test.h \
     abstractcontroller.h \

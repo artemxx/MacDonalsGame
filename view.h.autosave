@@ -119,7 +119,6 @@ private:
         for (int i = 0; i < NConstants::MAX_DISPLAYED_COUNT_DEQUE; ++i) {
             LeftLabels[i] = new QLabel();
             RightLabels[i] = new QLabel();
-            LeftLabels[i]->setFrameStyle(QFrame::Panel);
 
             AddWidget(LeftLabels[i], i + 4, 2);
             AddWidget(RightLabels[i], i + 4, 5);
