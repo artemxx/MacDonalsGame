@@ -55,6 +55,10 @@ void TController::PopSecondDequeBack() {
     View->DrawSecondDeque(SecondDeque);
 }
 
+void TController::MoveForwardFirstIterator() {
+    if ()
+}
+
 void TController::CompareDeques() {
     View->DrawCompareResult(FirstDeque == SecondDeque);
 }

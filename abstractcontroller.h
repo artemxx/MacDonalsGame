@@ -19,6 +19,11 @@ public:
     virtual void PopSecondDequeFront() = 0;
     virtual void PopSecondDequeBack() = 0;
 
+    virtual void MoveForwardFirstIterator() = 0;
+    virtual void MoveBackwardFirstIterator() = 0;
+    virtual void MoveForwardSecondIterator() = 0;
+    virtual void MoveBackwardSecondIterator() = 0;
+
     virtual void CompareDeques() = 0;
 
 protected:

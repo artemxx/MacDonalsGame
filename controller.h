@@ -21,6 +21,11 @@ public:
     void PopSecondDequeFront() override;
     void PopSecondDequeBack() override;
 
+    void MoveForwardFirstIterator() override;
+    void MoveBackwardFirstIterator() override;
+    void MoveForwardSecondIterator() override;
+    void MoveBackwardSecondIterator() override;
+
     void CompareDeques() override;
 
 protected:
