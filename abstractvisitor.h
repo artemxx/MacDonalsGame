@@ -1,4 +1,1 @@
-#ifndef ABSTRACTVISITOR_H
-#define ABSTRACTVISITOR_H
-
-#endif // ABSTRACTVISITOR_H
+#pragma once
