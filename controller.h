@@ -30,4 +30,7 @@ public:
 
 protected:
     TAbstractView* View;
+
+    TBiDirectionalList<QString> FirstDeque;
+    TBiDirectionalList<QString> SecondDeque;
 };

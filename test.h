@@ -1,10 +1,11 @@
 #pragma once
 
-#include "list.h"
 #include <vector>
 #include <map>
 #include <string>
 #include <exception>
+
+#include "list.h"
 
 void TestEmptyList();
 

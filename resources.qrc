@@ -1,0 +1,11 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file>images/artemxx.jpg</file>
+    <file>images/kfc.jpg</file>
+    <file>images/kroshka.jpg</file>
+    <file>images/mac.jpeg</file>
+    <file>images/dragonfly.jpg</file>
+    <file>images/eda.jpg</file>
+</qresource>
+</RCC>
