@@ -24,5 +24,8 @@ public:
     virtual void MoveForwardSecondIterator() = 0;
     virtual void MoveBackwardSecondIterator() = 0;
 
+    virtual void ChangeFirstName(const QString& name) = 0;
+    virtual void ChangeSecondName(const QString& name) = 0;
+
     virtual void CompareDeques() = 0;
 };

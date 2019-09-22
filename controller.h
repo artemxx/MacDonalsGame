@@ -26,11 +26,16 @@ public:
     void MoveForwardSecondIterator() override;
     void MoveBackwardSecondIterator() override;
 
+    void ChangeFirstName(const QString& name) override;
+    void ChangeSecondName(const QString& name) override;
+
     void CompareDeques() override;
 
 protected:
     TAbstractView* View;
 
+    TBiDirectionalList<QString>::TIterator FirstIterator;
+    TBiDirectionalList<QString>::TIterator SecondIterator;
     TBiDirectionalList<QString> FirstDeque;
     TBiDirectionalList<QString> SecondDeque;
 };
