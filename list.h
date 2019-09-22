@@ -15,6 +15,8 @@ protected:
 public:
     class TIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
     public:
+        TIterator& operator=(const TIterator& other);
+
         T& operator*() const;
         T* operator->() const;
 
@@ -42,6 +44,9 @@ public:
     class TConstIterator :
         public std::iterator<std::bidirectional_iterator_tag, T> {
     public:
+        TConstIterator(TIterator iterator)
+            : List(iterator.List), Node(iterator.Node) {}
+
         const T& operator*() const;
         const T* operator->() const;
 
@@ -58,6 +63,7 @@ public:
 
     private:
         friend class TBiDirectionalList;
+        friend class TIterator;
 
         const TBiDirectionalList* const List;
         const TNode* Node;
@@ -190,6 +196,13 @@ const typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::TIterator
         Node = Node->PreviousNode;
     }
     return result;
+}
+
+template<typename T>
+typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::operator=(const TBiDirectionalList::TIterator& other) {
+    List == other.List;
+    Node == other.Node;
+    return *this;
 }
 
 template<typename T>

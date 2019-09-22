@@ -98,9 +98,11 @@ TView::~TView() {
     delete Controller;
 }
 
-void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
+void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
+                           const TBiDirectionalList<QString>::TIterator current) {
     for (auto& label : LeftLabels) {
         label->clear();
+        label->setFrameStyle(QFrame::NoFrame);
     }
 
     LeftNumber->display(deque.GetSize());
@@ -108,6 +110,9 @@ void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque) {
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
     for (; ++displayedCount <= LeftLabels.size() && it.IsValid(); ++it) {
+        if (it == current) {
+            LeftLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
+        }
         LeftLabels[displayedCount - 1]->setText(*it);
     }
 
@@ -125,9 +130,11 @@ void TView::DrawCompareResult(bool equal) {
     ComparisonButton->setPalette(palette);
 }
 
-void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque) {
+void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque,
+                            const TBiDirectionalList<QString>::TIterator current) {
     for (auto& label : RightLabels) {
         label->clear();
+        label->setFrameStyle(QFrame::NoFrame);
     }
 
     RightNumber->display(deque.GetSize());
@@ -135,6 +142,9 @@ void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque) {
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
     for (; ++displayedCount <= RightLabels.size() && it.IsValid(); ++it) {
+        if (it == current) {
+            RightLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
+        }
         RightLabels[displayedCount - 1]->setText(*it);
     }
 

@@ -63,8 +63,10 @@ public:
     TView(QWidget* parent = nullptr);
     ~TView() override;
 
-    void DrawFirstDeque(const TBiDirectionalList<QString>& deque) override;
-    void DrawSecondDeque(const TBiDirectionalList<QString>& deque) override;
+    void DrawFirstDeque(const TBiDirectionalList<QString>& deque,
+                        const TBiDirectionalList<QString>::TIterator iteerator) override;
+    void DrawSecondDeque(const TBiDirectionalList<QString>& deque,
+                         const TBiDirectionalList<QString>::TIterator iteerator) override;
 
     void DrawCompareResult(bool result) override;
 
