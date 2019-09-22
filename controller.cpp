@@ -89,7 +89,7 @@ void TController::MoveForwardFirstIterator() {
 }
 
 void TController::MoveBackwardFirstIterator() {
-    if (FirstIterator != FirstDeque.begin()) {
+    if (FirstIterator == FirstDeque.begin()) {
         FirstIterator = --FirstDeque.end();
     } else {
         --FirstIterator;
@@ -106,7 +106,7 @@ void TController::MoveForwardSecondIterator() {
 }
 
 void TController::MoveBackwardSecondIterator() {
-    if (SecondIterator != SecondDeque.begin()) {
+    if (SecondIterator == SecondDeque.begin()) {
         SecondIterator = --SecondDeque.end();
     } else {
         --SecondIterator;
@@ -116,10 +116,12 @@ void TController::MoveBackwardSecondIterator() {
 
 void TController::ChangeFirstName(const QString& name) {
     *FirstIterator = name;
+    View->DrawFirstDeque();
 }
 
 void TController::ChangeSecondName(const QString& name) {
     *SecondIterator = name;
+    View->DrawSecondDeque();
 }
 
 void TController::CompareDeques() {
