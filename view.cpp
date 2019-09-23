@@ -134,6 +134,9 @@ void TView::EnableRightButtons(bool is_enabled) {
     RightPrevIteratorButton->setEnabled(is_enabled);
     RightNameChangeButton->setEnabled(is_enabled);
     RightIteratorTextInput->setEnabled(is_enabled);
+    if (!is_enabled) {
+        RightIteratorTextInput->setText("");
+    }
 }
 
 void TView::EnableLeftButtons(bool is_enabled) {
@@ -141,6 +144,9 @@ void TView::EnableLeftButtons(bool is_enabled) {
     LeftPrevIteratorButton->setEnabled(is_enabled);
     LeftNameChangeButton->setEnabled(is_enabled);
     LeftIteratorTextInput->setEnabled(is_enabled);
+    if (!is_enabled) {
+        LeftIteratorTextInput->setText("");
+    }
 }
 
 void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
@@ -152,8 +158,10 @@ void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
 
     LeftNumber->display(deque.GetSize());
 
+    DiscardCompareButton();
     if (deque.IsEmpty()) {
         EnableLeftButtons(false);
+        return;
     } else {
         EnableLeftButtons(true);
     }
@@ -166,8 +174,7 @@ void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
         }
         LeftLabels[displayedCount - 1]->setText(*it);
     }
-
-    DiscardCompareButton();
+    LeftIteratorTextInput->setText(*current);
 }
 
 void TView::DrawCompareResult(bool equal) {
@@ -190,8 +197,10 @@ void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque,
 
     RightNumber->display(deque.GetSize());
 
+    DiscardCompareButton();
     if (deque.IsEmpty()) {
         EnableRightButtons(false);
+        return;
     } else {
         EnableRightButtons(true);
     }
@@ -204,8 +213,7 @@ void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque,
         }
         RightLabels[displayedCount - 1]->setText(*it);
     }
-
-    DiscardCompareButton();
+    RightIteratorTextInput->setText(*current);
 }
 
 void TView::DiscardCompareButton() {
