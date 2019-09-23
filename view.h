@@ -63,6 +63,10 @@ public:
     TView(QWidget* parent = nullptr);
     ~TView() override;
 
+    void EnableRightButtons(bool is_enabled);
+
+    void EnableLeftButtons(bool is_enabled);
+
     void DrawFirstDeque(const TBiDirectionalList<QString>& deque,
                         const TBiDirectionalList<QString>::TIterator iteerator) override;
     void DrawSecondDeque(const TBiDirectionalList<QString>& deque,

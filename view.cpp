@@ -120,10 +120,27 @@ TView::TView(QWidget *parent)
     connect(RightIteratorTextInput, &QLineEdit::returnPressed, [&](){
         Controller->ChangeSecondName(RightIteratorTextInput->text());
     });
+
+    EnableLeftButtons(false);
+    EnableRightButtons(false);
 }
 
 TView::~TView() {
     delete Controller;
+}
+
+void TView::EnableRightButtons(bool is_enabled) {
+    RightNextIteratorButton->setEnabled(is_enabled);
+    RightPrevIteratorButton->setEnabled(is_enabled);
+    RightNameChangeButton->setEnabled(is_enabled);
+    RightIteratorTextInput->setEnabled(is_enabled);
+}
+
+void TView::EnableLeftButtons(bool is_enabled) {
+    LeftNextIteratorButton->setEnabled(is_enabled);
+    LeftPrevIteratorButton->setEnabled(is_enabled);
+    LeftNameChangeButton->setEnabled(is_enabled);
+    LeftIteratorTextInput->setEnabled(is_enabled);
 }
 
 void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
@@ -134,6 +151,12 @@ void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
     }
 
     LeftNumber->display(deque.GetSize());
+
+    if (deque.IsEmpty()) {
+        EnableLeftButtons(false);
+    } else {
+        EnableLeftButtons(true);
+    }
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
@@ -166,6 +189,12 @@ void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque,
     }
 
     RightNumber->display(deque.GetSize());
+
+    if (deque.IsEmpty()) {
+        EnableRightButtons(false);
+    } else {
+        EnableRightButtons(true);
+    }
 
     int displayedCount = 0;
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
