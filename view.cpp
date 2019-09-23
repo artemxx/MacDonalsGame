@@ -129,22 +129,22 @@ TView::~TView() {
     delete Controller;
 }
 
-void TView::EnableRightButtons(bool is_enabled) {
-    RightNextIteratorButton->setEnabled(is_enabled);
-    RightPrevIteratorButton->setEnabled(is_enabled);
-    RightNameChangeButton->setEnabled(is_enabled);
-    RightIteratorTextInput->setEnabled(is_enabled);
-    if (!is_enabled) {
+void TView::EnableRightButtons(bool enabled) {
+    RightNextIteratorButton->setEnabled(enabled);
+    RightPrevIteratorButton->setEnabled(enabled);
+    RightNameChangeButton->setEnabled(enabled);
+    RightIteratorTextInput->setEnabled(enabled);
+    if (!enabled) {
         RightIteratorTextInput->setText("");
     }
 }
 
-void TView::EnableLeftButtons(bool is_enabled) {
-    LeftNextIteratorButton->setEnabled(is_enabled);
-    LeftPrevIteratorButton->setEnabled(is_enabled);
-    LeftNameChangeButton->setEnabled(is_enabled);
-    LeftIteratorTextInput->setEnabled(is_enabled);
-    if (!is_enabled) {
+void TView::EnableLeftButtons(bool enabled) {
+    LeftNextIteratorButton->setEnabled(enabled);
+    LeftPrevIteratorButton->setEnabled(enabled);
+    LeftNameChangeButton->setEnabled(enabled);
+    LeftIteratorTextInput->setEnabled(enabled);
+    if (!enabled) {
         LeftIteratorTextInput->setText("");
     }
 }
