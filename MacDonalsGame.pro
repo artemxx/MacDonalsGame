@@ -22,13 +22,13 @@ SOURCES += \
     controller.cpp \
 
 HEADERS += \
-    abstractvisitor.h \
     list.h \
     test.h \
     abstractcontroller.h \
     abstractview.h \
     controller.h \
-    view.h
+    view.h \
+    visitor.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,11 +1,39 @@
 #include "controller.h"
 
+TFrontPusher::TFrontPusher(const QString &name)
+    : Name(name)
+{
+}
+
+TBackPusher::TBackPusher(const QString &name)
+    : Name(name)
+{
+}
+
+void TFrontPusher::Visit(TDeque& deque) {
+    deque.PushFront(Name);
+}
+
+void TBackPusher::Visit(TDeque& deque) {
+    deque.PushBack(Name);
+}
+
+void TFrontPopper::Visit(TDeque& deque) {
+    deque.PopFront();
+}
+
+void TBackPopper::Visit(TDeque& deque) {
+    deque.PopBack();
+}
+
 TController::TController(TAbstractView* view)
-    : View(view), FirstDeque(), SecondDeque(),
-      FirstIterator(FirstDeque.begin()), SecondIterator(SecondDeque.begin()) {}
+    : View(view), FirstDeque(), SecondDeque()
+    , FirstIterator(FirstDeque.begin()), SecondIterator(SecondDeque.begin())
+    {
+    }
 
 void TController::PushFirstDequeFront(const QString& name) {
-    FirstDeque.PushFront(name);
+    TFrontPusher(name).Visit(FirstDeque);
     if (FirstDeque.GetSize() == 1) {
         FirstIterator = FirstDeque.begin();
     }
@@ -13,7 +41,7 @@ void TController::PushFirstDequeFront(const QString& name) {
 }
 
 void TController::PushFirstDequeBack(const QString& name) {
-    FirstDeque.PushBack(name);
+    TBackPusher(name).Visit(FirstDeque);
     if (FirstDeque.GetSize() == 1) {
         FirstIterator = FirstDeque.begin();
     }
@@ -27,7 +55,7 @@ void TController::PopFirstDequeFront() {
     if (FirstIterator == FirstDeque.begin()) {
         ++FirstIterator;
     }
-    FirstDeque.PopFront();
+    TFrontPopper().Visit(FirstDeque);
     View->DrawFirstDeque(FirstDeque, FirstIterator);
 }
 
@@ -38,12 +66,12 @@ void TController::PopFirstDequeBack() {
     if (FirstIterator == --FirstDeque.end()) {
         FirstIterator = FirstDeque.begin();
     }
-    FirstDeque.PopBack();
+    TBackPopper().Visit(FirstDeque);
     View->DrawFirstDeque(FirstDeque, FirstIterator);
 }
 
 void TController::PushSecondDequeFront(const QString& name) {
-    SecondDeque.PushFront(name);
+    TFrontPusher(name).Visit(SecondDeque);
     if (SecondDeque.GetSize() == 1) {
         SecondIterator = SecondDeque.begin();
     }
@@ -51,7 +79,7 @@ void TController::PushSecondDequeFront(const QString& name) {
 }
 
 void TController::PushSecondDequeBack(const QString& name) {
-    SecondDeque.PushBack(name);
+    TBackPusher(name).Visit(SecondDeque);
     if (SecondDeque.GetSize() == 1) {
         SecondIterator = SecondDeque.begin();
     }
@@ -65,7 +93,7 @@ void TController::PopSecondDequeFront() {
     if (SecondIterator == SecondDeque.begin()) {
         ++SecondIterator;
     }
-    SecondDeque.PopFront();
+    TFrontPopper().Visit(SecondDeque);
     View->DrawSecondDeque(SecondDeque, SecondIterator);
 }
 
@@ -74,9 +102,9 @@ void TController::PopSecondDequeBack() {
         return;
     }
     if (SecondIterator == --SecondDeque.end()) {
-        SecondDeque.begin();
+        SecondIterator = SecondDeque.begin();
     }
-    SecondDeque.PopBack();
+    TBackPopper().Visit(SecondDeque);
     View->DrawSecondDeque(SecondDeque, SecondIterator);
 }
 

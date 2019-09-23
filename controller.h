@@ -5,6 +5,43 @@
 
 #include "abstractcontroller.h"
 #include "abstractview.h"
+#include "visitor.h"
+
+using TDeque = TBiDirectionalList<QString>;
+
+class TFrontPusher : public TVisitor {
+public:
+    TFrontPusher(const QString& name);
+
+    ~TFrontPusher() override = default;
+    void Visit(TDeque& deque) override;
+
+private:
+    const QString Name;
+};
+
+class TBackPusher : public TVisitor {
+public:
+    TBackPusher(const QString& name);
+
+    ~TBackPusher() override = default;
+    void Visit(TDeque& deque) override;
+
+private:
+    const QString Name;
+};
+
+class TFrontPopper : public TVisitor {
+public:
+    ~TFrontPopper() override = default;
+    void Visit(TDeque& deque) override;
+};
+
+class TBackPopper : public TVisitor {
+public:
+    ~TBackPopper() override = default;
+    void Visit(TDeque& deque) override;
+};
 
 class TController : public TAbstractController {
 public:
@@ -34,8 +71,8 @@ public:
 protected:
     TAbstractView* View;
 
-    TBiDirectionalList<QString> FirstDeque;
-    TBiDirectionalList<QString> SecondDeque;
-    TBiDirectionalList<QString>::TIterator FirstIterator;
-    TBiDirectionalList<QString>::TIterator SecondIterator;
+    TDeque FirstDeque;
+    TDeque SecondDeque;
+    TDeque::TIterator FirstIterator;
+    TDeque::TIterator SecondIterator;
 };
