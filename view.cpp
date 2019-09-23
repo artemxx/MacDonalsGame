@@ -2,6 +2,7 @@
 
 #include "view.h"
 #include "ui_mainwindow.h"
+#include "peoplegroup.h"
 
 TView::TView(QWidget *parent)
     : QMainWindow(parent)
@@ -149,8 +150,9 @@ void TView::EnableLeftButtons(bool enabled) {
     }
 }
 
-void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
-                           const TBiDirectionalList<QString>::TIterator current) {
+void TView::DrawFirstDeque(const TDeque& firstDeque) {
+    const auto& deque = firstDeque.Deque;
+    const auto& current = firstDeque.Iterator;
     for (auto& label : LeftLabels) {
         label->clear();
         label->setFrameStyle(QFrame::NoFrame);
@@ -167,7 +169,7 @@ void TView::DrawFirstDeque(const TBiDirectionalList<QString> &deque,
     }
 
     int displayedCount = 0;
-    typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
+    auto it = deque.begin();
     for (; ++displayedCount <= LeftLabels.size() && it.IsValid(); ++it) {
         if (it == current) {
             LeftLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
@@ -188,8 +190,9 @@ void TView::DrawCompareResult(bool equal) {
     ComparisonButton->setPalette(palette);
 }
 
-void TView::DrawSecondDeque(const TBiDirectionalList<QString> &deque,
-                            const TBiDirectionalList<QString>::TIterator current) {
+void TView::DrawSecondDeque(const TDeque& secondDeque) {
+    const auto& deque = secondDeque.Deque;
+    const auto& current = secondDeque.Iterator;
     for (auto& label : RightLabels) {
         label->clear();
         label->setFrameStyle(QFrame::NoFrame);

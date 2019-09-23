@@ -1,157 +1,99 @@
 #include "controller.h"
 
-TFrontPusher::TFrontPusher(const QString &name)
-    : Name(name)
-{
-}
-
-TBackPusher::TBackPusher(const QString &name)
-    : Name(name)
-{
-}
-
-void TFrontPusher::Visit(TDeque& deque) {
-    deque.PushFront(Name);
-}
-
-void TBackPusher::Visit(TDeque& deque) {
-    deque.PushBack(Name);
-}
-
-void TFrontPopper::Visit(TDeque& deque) {
-    deque.PopFront();
-}
-
-void TBackPopper::Visit(TDeque& deque) {
-    deque.PopBack();
-}
-
 TController::TController(TAbstractView* view)
     : View(view), FirstDeque(), SecondDeque()
-    , FirstIterator(FirstDeque.begin()), SecondIterator(SecondDeque.begin())
     {
     }
 
 void TController::PushFirstDequeFront(const QString& name) {
-    TFrontPusher(name).Visit(FirstDeque);
-    if (FirstDeque.GetSize() == 1) {
-        FirstIterator = FirstDeque.begin();
-    }
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    FirstDeque.Accept(TFrontPusher(name));
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::PushFirstDequeBack(const QString& name) {
-    TBackPusher(name).Visit(FirstDeque);
-    if (FirstDeque.GetSize() == 1) {
-        FirstIterator = FirstDeque.begin();
-    }
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    FirstDeque.Accept(TBackPusher(name));
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::PopFirstDequeFront() {
-    if (FirstDeque.IsEmpty()) {
-        return;
-    }
-    if (FirstIterator == FirstDeque.begin()) {
-        ++FirstIterator;
-    }
-    TFrontPopper().Visit(FirstDeque);
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    FirstDeque.Accept(TFrontPopper());
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::PopFirstDequeBack() {
-    if (FirstDeque.IsEmpty()) {
-        return;
-    }
-    if (FirstIterator == --FirstDeque.end()) {
-        FirstIterator = FirstDeque.begin();
-    }
-    TBackPopper().Visit(FirstDeque);
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    FirstDeque.Accept(TBackPopper());
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::PushSecondDequeFront(const QString& name) {
-    TFrontPusher(name).Visit(SecondDeque);
-    if (SecondDeque.GetSize() == 1) {
-        SecondIterator = SecondDeque.begin();
-    }
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    SecondDeque.Accept(TFrontPusher(name));
+    View->DrawSecondDeque(SecondDeque);
 }
 
 void TController::PushSecondDequeBack(const QString& name) {
-    TBackPusher(name).Visit(SecondDeque);
-    if (SecondDeque.GetSize() == 1) {
-        SecondIterator = SecondDeque.begin();
-    }
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    SecondDeque.Accept(TBackPusher(name));
+    View->DrawSecondDeque(SecondDeque);
 }
 
 void TController::PopSecondDequeFront() {
-    if (SecondDeque.IsEmpty()) {
-        return;
-    }
-    if (SecondIterator == SecondDeque.begin()) {
-        ++SecondIterator;
-    }
-    TFrontPopper().Visit(SecondDeque);
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    SecondDeque.Accept(TFrontPopper());
+    View->DrawSecondDeque(SecondDeque);
 }
 
 void TController::PopSecondDequeBack() {
-    if (SecondDeque.IsEmpty()) {
-        return;
+    SecondDeque.Accept(TBackPopper());
+    View->DrawSecondDeque(SecondDeque);
+}
+
+void TController::MoveForwardIterator(TDeque& deque) {
+    ++deque.Iterator;
+    if (deque.Iterator == deque.Deque.end()) {
+        deque.Iterator = deque.Deque.begin();
     }
-    if (SecondIterator == --SecondDeque.end()) {
-        SecondIterator = SecondDeque.begin();
+}
+
+void TController::MoveBackwardIterator(TDeque& deque) {
+    if (deque.Iterator == deque.Deque.begin()) {
+        deque.Iterator = --deque.Deque.end();
+    } else {
+        --deque.Iterator;
     }
-    TBackPopper().Visit(SecondDeque);
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
 }
 
 void TController::MoveForwardFirstIterator() {
-    ++FirstIterator;
-    if (FirstIterator == FirstDeque.end()) {
-        FirstIterator = FirstDeque.begin();
-    }
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    MoveForwardIterator(FirstDeque);
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::MoveBackwardFirstIterator() {
-    if (FirstIterator == FirstDeque.begin()) {
-        FirstIterator = --FirstDeque.end();
-    } else {
-        --FirstIterator;
-    }
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    MoveBackwardIterator(FirstDeque);
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::MoveForwardSecondIterator() {
-    ++SecondIterator;
-    if (SecondIterator == SecondDeque.end()) {
-        SecondIterator = SecondDeque.begin();
-    }
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    MoveForwardIterator(SecondDeque);
+    View->DrawSecondDeque(SecondDeque);
 }
 
 void TController::MoveBackwardSecondIterator() {
-    if (SecondIterator == SecondDeque.begin()) {
-        SecondIterator = --SecondDeque.end();
-    } else {
-        --SecondIterator;
-    }
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    MoveBackwardIterator(SecondDeque);
+    View->DrawSecondDeque(SecondDeque);
+}
+
+void TController::ChangeName(TDeque& deque, const QString& name) {
+    *deque.Iterator = name;
 }
 
 void TController::ChangeFirstName(const QString& name) {
-    *FirstIterator = name;
-    View->DrawFirstDeque(FirstDeque, FirstIterator);
+    ChangeName(FirstDeque, name);
+    View->DrawFirstDeque(FirstDeque);
 }
 
 void TController::ChangeSecondName(const QString& name) {
-    *SecondIterator = name;
-    View->DrawSecondDeque(SecondDeque, SecondIterator);
+    ChangeName(SecondDeque, name);
+    View->DrawSecondDeque(SecondDeque);
 }
 
 void TController::CompareDeques() {
-    View->DrawCompareResult(FirstDeque == SecondDeque);
+    View->DrawCompareResult(FirstDeque.Deque == SecondDeque.Deque);
 }

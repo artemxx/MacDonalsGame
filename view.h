@@ -12,7 +12,7 @@
 
 #include "abstractview.h"
 #include "controller.h"
-#include "list.h"
+#include "peoplegroup.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -67,10 +67,8 @@ public:
 
     void EnableLeftButtons(bool is_enabled);
 
-    void DrawFirstDeque(const TBiDirectionalList<QString>& deque,
-                        const TBiDirectionalList<QString>::TIterator iteerator) override;
-    void DrawSecondDeque(const TBiDirectionalList<QString>& deque,
-                         const TBiDirectionalList<QString>::TIterator iteerator) override;
+    void DrawFirstDeque(const TDeque& firstDeque) override;
+    void DrawSecondDeque(const TDeque& secondDeque) override;
 
     void DrawCompareResult(bool result) override;
 

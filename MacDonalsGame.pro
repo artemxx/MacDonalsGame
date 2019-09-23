@@ -20,6 +20,8 @@ SOURCES += \
     view.cpp \
     test.cpp \
     controller.cpp \
+    visitor.cpp \
+    peoplegroup.cpp
 
 HEADERS += \
     list.h \
@@ -28,7 +30,8 @@ HEADERS += \
     abstractview.h \
     controller.h \
     view.h \
-    visitor.h
+    visitor.h \
+    peoplegroup.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
