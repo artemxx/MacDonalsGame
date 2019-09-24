@@ -33,4 +33,7 @@ public:
     virtual void ChangeSecondName(const QString& name) = 0;
 
     virtual void CompareDeques() = 0;
+
+    virtual void PushCrawd(const QString& name) = 0;
+    virtual void PopCrawd() = 0;
 };
