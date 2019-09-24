@@ -180,9 +180,9 @@ void TView::DrawFirstDeque(const TDeque& firstDeque) {
         EnableLeftButtons(true);
     }
 
-    int displayedCount = 0;
     auto it = deque.begin();
-    for (; ++displayedCount <= LeftLabels.size() && it.IsValid(); ++it) {
+    for (int displayedCount = 0; displayedCount < LeftLabels.size() &&
+         it.IsValid(); ++it, ++displayedCount) {
         if (it == current) {
             LeftLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
         }
@@ -212,13 +212,13 @@ void TView::DrawSecondDeque(const TDeque& secondDeque) {
 
 
     typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
-    for (int displayedCount = 0; displayedCount <= RightLabels.size()
-         && it.IsValid(); ++it, ++displayedCount)
+    for (int displayedCount = 0; displayedCount < RightLabels.size() &&
+         it.IsValid(); ++it, ++displayedCount)
     {
         if (it == current) {
-            RightLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
+            RightLabels[displayedCount]->setFrameStyle(QFrame::Panel);
         }
-        RightLabels[displayedCount - 1]->setText(*it);
+        RightLabels[displayedCount]->setText(*it);
     }
     RightIteratorTextInput->setText(*current);
 }
