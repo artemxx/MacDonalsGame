@@ -184,9 +184,9 @@ void TView::DrawFirstDeque(const TDeque& firstDeque) {
     for (int displayedCount = 0; displayedCount < LeftLabels.size() &&
          it.IsValid(); ++it, ++displayedCount) {
         if (it == current) {
-            LeftLabels[displayedCount - 1]->setFrameStyle(QFrame::Panel);
+            LeftLabels[displayedCount]->setFrameStyle(QFrame::Panel);
         }
-        LeftLabels[displayedCount - 1]->setText(*it);
+        LeftLabels[displayedCount]->setText(*it);
     }
     LeftIteratorTextInput->setText(*current);
 }
