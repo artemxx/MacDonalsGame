@@ -97,3 +97,13 @@ void TController::ChangeSecondName(const QString& name) {
 void TController::CompareDeques() {
     View->DrawCompareResult(FirstDeque.Deque == SecondDeque.Deque);
 }
+
+void TController::PushCrawd(const QString& name) {
+    Crawd.Accept(TFrontPusher(name));
+    View->DrawCrawd(Crawd);
+}
+
+void TController::PopCrawd() {
+    Crawd.Accept(TFrontPopper());
+    View->DrawCrawd(Crawd);
+}

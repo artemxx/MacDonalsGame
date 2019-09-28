@@ -12,4 +12,6 @@ public:
     virtual void DrawSecondDeque(const TDeque& secondDeque) = 0;
 
     virtual void DrawCompareResult(bool result) = 0;
+
+    virtual void DrawCrawd(const TCrawd& crawd) = 0;
 };

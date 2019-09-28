@@ -24,6 +24,7 @@ SOURCES += \
     peoplegroup.cpp
 
 HEADERS += \
+    constants.h \
     list.h \
     test.h \
     abstractcontroller.h \

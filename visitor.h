@@ -19,6 +19,7 @@ public:
     ~TFrontPusher() override = default;
 
     void Visit(TDeque& deque) const override;
+    void Visit(TCrawd& crawd) const override;
 
 private:
     const QString Name;
@@ -40,6 +41,7 @@ public:
     ~TFrontPopper() override = default;
 
     void Visit(TDeque& deque) const override;
+    void Visit(TCrawd& crawd) const override;
 };
 
 class TBackPopper : public TVisitor {

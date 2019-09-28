@@ -1,6 +1,7 @@
 #pragma once
+
 #include <QString>
-#include <vector>
+#include <QVector>
 
 #include "list.h"
 
@@ -14,7 +15,7 @@ struct TPeopleGroup {
 
 struct TDeque : public TPeopleGroup {
     TDeque();
-    ~TDeque() = default;
+    ~TDeque() override = default;
 
     void Accept(const TVisitor& visitor) override;
 
@@ -25,5 +26,5 @@ struct TDeque : public TPeopleGroup {
 struct TCrawd : public TPeopleGroup {
     void Accept(const TVisitor& visitor) override;
 
-    std::vector<QString> Crawd;
+    QVector<QString> Crawd;
 };

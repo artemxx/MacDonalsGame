@@ -37,9 +37,13 @@ public:
 
     void CompareDeques() override;
 
+    void PushCrawd(const QString& name) override;
+    void PopCrawd() override;
+
 protected:
     TAbstractView* View;
 
     TDeque FirstDeque;
     TDeque SecondDeque;
+    TCrawd Crawd;
 };
