@@ -6,15 +6,13 @@
 
 class TVisitor;
 
-struct TPeopleGroup
-{
+struct TPeopleGroup {
     virtual ~TPeopleGroup() = default;
 
     virtual void Accept(const TVisitor& visitor) = 0;
 };
 
-struct TDeque : public TPeopleGroup
-{
+struct TDeque : public TPeopleGroup {
     TDeque();
     ~TDeque() = default;
 
@@ -24,8 +22,7 @@ struct TDeque : public TPeopleGroup
     TBiDirectionalList<QString>::TIterator Iterator;
 };
 
-struct TCrawd : public TPeopleGroup
-{
+struct TCrawd : public TPeopleGroup {
     void Accept(const TVisitor& visitor) override;
 
     std::vector<QString> Crawd;

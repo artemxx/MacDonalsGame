@@ -13,64 +13,8 @@ protected:
     struct TNode;
 
 public:
-    class TIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
-    public:
-        TIterator& operator=(const TIterator& other);
-
-        T& operator*() const;
-        T* operator->() const;
-
-        TIterator& operator++();
-        const TIterator operator++(int);
-
-        TIterator& operator--();
-        const TIterator operator--(int);
-
-        bool operator==(const TIterator& other) const;
-        bool operator!=(const TIterator& other) const;
-
-        bool IsValid() const;
-
-    private:
-        friend class TBiDirectionalList;
-
-        const TBiDirectionalList* List;
-        TNode* Node;
-
-        TIterator(const TBiDirectionalList* const list, TNode* node)
-            : List(list), Node(node) {}
-    };
-
-    class TConstIterator :
-        public std::iterator<std::bidirectional_iterator_tag, T> {
-    public:
-        TConstIterator(TIterator iterator)
-            : List(iterator.List), Node(iterator.Node) {}
-
-        const T& operator*() const;
-        const T* operator->() const;
-
-        TConstIterator& operator++();
-        const TConstIterator operator++(int);
-
-        TConstIterator& operator--();
-        const TConstIterator operator--(int);
-
-        bool operator==(const TConstIterator& other) const;
-        bool operator!=(const TConstIterator& other) const;
-
-        bool IsValid() const;
-
-    private:
-        friend class TBiDirectionalList;
-        friend class TIterator;
-
-        const TBiDirectionalList* List;
-        const TNode* Node;
-
-        TConstIterator(const TBiDirectionalList* const list, TNode* node)
-            : List(list), Node(node) {}
-    };
+    class TIterator;
+    class TConstIterator;
 
     TBiDirectionalList() : First(nullptr), Last(nullptr) {}
 
@@ -140,6 +84,67 @@ protected:
     void InsertBefore(TNode* existingNode, TNode* newNode);
     void InsertAfter(TNode* existingNode, TNode* newNode);
     void Erase(TNode* node);
+};
+
+template<typename T>
+class TBiDirectionalList<T>::TIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
+public:
+    TIterator& operator=(const TIterator& other);
+
+    T& operator*() const;
+    T* operator->() const;
+
+    TIterator& operator++();
+    const TIterator operator++(int);
+
+    TIterator& operator--();
+    const TIterator operator--(int);
+
+    bool operator==(const TIterator& other) const;
+    bool operator!=(const TIterator& other) const;
+
+    bool IsValid() const;
+
+private:
+    friend class TBiDirectionalList;
+
+    const TBiDirectionalList* List;
+    TNode* Node;
+
+    TIterator(const TBiDirectionalList* const list, TNode* node)
+        : List(list), Node(node) {}
+};
+
+template<typename T>
+class TBiDirectionalList<T>::TConstIterator :
+    public std::iterator<std::bidirectional_iterator_tag, T> {
+public:
+    TConstIterator(TIterator iterator)
+        : List(iterator.List), Node(iterator.Node) {}
+
+    const T& operator*() const;
+    const T* operator->() const;
+
+    TConstIterator& operator++();
+    const TConstIterator operator++(int);
+
+    TConstIterator& operator--();
+    const TConstIterator operator--(int);
+
+    bool operator==(const TConstIterator& other) const;
+    bool operator!=(const TConstIterator& other) const;
+
+    bool IsValid() const;
+
+private:
+    friend class TBiDirectionalList;
+    friend class TIterator;
+
+    const TBiDirectionalList* List;
+    const TNode* Node;
+
+    TConstIterator(const TBiDirectionalList* const list, TNode* node)
+        : List(list), Node(node) {}
 };
 
 template<typename T>
