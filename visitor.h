@@ -10,7 +10,7 @@ public:
 
     virtual void Visit(TDeque& deque) const = 0;
 
-    virtual void Visit(TCrawd& crawd) const {}
+    virtual void Visit(TCrawd&) const {}
 };
 
 class TFrontPusher : public TVisitor {

@@ -211,7 +211,7 @@ void TView::DrawSecondDeque(const TDeque& secondDeque) {
     }
 
 
-    typename TBiDirectionalList<QString>::TConstIterator it = deque.begin();
+    TConstIterator<QString> it = deque.begin();
     for (int displayedCount = 0; displayedCount < RightLabels.size() &&
          it.IsValid(); ++it, ++displayedCount)
     {

@@ -6,16 +6,23 @@
 #include <stdexcept>
 #include <algorithm>
 #include <vector>
+#include <memory>
+
+template<typename T>
+class TIterator;
+
+template<typename T>
+class TConstIterator;
+
+template<typename T>
+class TListIteratorImplementation;
+
+template<typename T>
+class TListConstIteratorImplementation;
 
 template<typename T>
 class TBiDirectionalList {
-protected:
-    struct TNode;
-
 public:
-    class TIterator;
-    class TConstIterator;
-
     TBiDirectionalList() : First(nullptr), Last(nullptr) {}
 
     ~TBiDirectionalList() { Clear(); }
@@ -24,22 +31,22 @@ public:
 
     void Clear();
 
-    TIterator begin();
-    TIterator end();
+    TIterator<T> begin();
+    TIterator<T> end();
 
-    TConstIterator begin() const;
-    TConstIterator end() const;
+    TConstIterator<T> begin() const;
+    TConstIterator<T> end() const;
 
     std::vector<T> AsArray() const;
 
     template<class C>
     friend bool operator==(const TBiDirectionalList<C>& lhs, const TBiDirectionalList<C>& rhs);
 
-    void InsertBefore(TIterator position, const T& value);
-    void InsertBefore(TIterator position, T&& value);
+    void InsertBefore(TIterator<T> position, const T& value);
+    void InsertBefore(TIterator<T> position, T&& value);
 
-    void InsertAfter(TIterator position, const T& value);
-    void InsertAfter(TIterator position, T&& value);
+    void InsertAfter(TIterator<T> position, const T& value);
+    void InsertAfter(TIterator<T> position, T&& value);
 
     void PushBack(const T& value);
     void PushBack(T&& value);
@@ -47,20 +54,19 @@ public:
     void PushFront(const T& value);
     void PushFront(T&& value);
 
-    void Erase(TIterator position);
+    void Erase(TIterator<T> position);
 
     void PopFront();
     void PopBack();
 
-    TIterator Find(const T& value);
-    TConstIterator Find(const T& value) const;
-
-    TIterator Find(std::function<bool(const T&)> predicate);
-    TConstIterator Find(std::function<bool(const T&)> predicate) const;
-
     int GetSize() const;
 
 protected:
+    friend class TIterator<T>;
+    friend class TConstIterator<T>;
+    friend class TListIteratorImplementation<T>;
+    friend class TListConstIteratorImplementation<T>;
+
     struct TNode {
         explicit TNode(const T& value)
             : Value(value), NextNode(nullptr), PreviousNode(nullptr) {
@@ -76,6 +82,7 @@ protected:
         TNode* PreviousNode;
     };
 
+
     TNode* First;
     TNode* Last;
 
@@ -87,97 +94,244 @@ protected:
 };
 
 template<typename T>
-class TBiDirectionalList<T>::TIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
+class TIterator {
 public:
-    TIterator& operator=(const TIterator& other);
+    struct IIteratorImplementation {
+        virtual T& GetReference() const = 0;
+        virtual T* GetPointer() const = 0;
 
-    T& operator*() const;
-    T* operator->() const;
+        virtual void Increment() = 0;
+        virtual void Decrement() = 0;
 
-    TIterator& operator++();
-    const TIterator operator++(int);
+        virtual bool EqualTo(IIteratorImplementation* const other) const = 0;
 
-    TIterator& operator--();
-    const TIterator operator--(int);
+        virtual bool IsValid() const = 0;
 
-    bool operator==(const TIterator& other) const;
-    bool operator!=(const TIterator& other) const;
+        virtual ~IIteratorImplementation() = default;
+    };
 
-    bool IsValid() const;
+    TIterator(IIteratorImplementation* const implementation)
+        : Implementation(implementation) {
+    }
+
+    TIterator(const TIterator& other) = default;
+
+    TIterator& operator=(const TIterator& other) = default;
+
+    T& operator*() const {
+        return Implementation->GetReference();
+    }
+
+    T* operator->() const {
+        return Implementation->GetPointer();
+    }
+
+    TIterator& operator++() {
+        Implementation->Increment();
+        return *this;
+    }
+
+    TIterator operator++(int) {
+        TIterator<T> result(*this);
+        Implementation->Increment();
+        return result;
+    }
+
+    TIterator& operator--() {
+        Implementation->Decrement();
+        return *this;
+    }
+
+    TIterator operator--(int) {
+        TIterator<T> result(*this);
+        Implementation->Decrement();
+        return result;
+    }
+
+    bool operator==(const TIterator& other) const {
+        return Implementation->EqualTo(other.Implementation);
+    }
+
+    bool operator!=(const TIterator& other) const {
+        return !operator==(other);
+    }
+
+    bool IsValid() const {
+        return Implementation->IsValid();
+    }
 
 private:
-    friend class TBiDirectionalList;
+    friend class TBiDirectionalList<T>;
+    friend class TConstIterator<T>;
 
-    const TBiDirectionalList* List;
-    TNode* Node;
-
-    TIterator(const TBiDirectionalList* const list, TNode* node)
-        : List(list), Node(node) {}
+    IIteratorImplementation* Implementation;
 };
 
 template<typename T>
-class TBiDirectionalList<T>::TConstIterator :
-    public std::iterator<std::bidirectional_iterator_tag, T> {
+class TConstIterator {
 public:
-    TConstIterator(TIterator iterator)
-        : List(iterator.List), Node(iterator.Node) {}
+    struct IConstIteratorImplementation {
+        virtual const T& GetReference() const = 0;
+        virtual const T* GetPointer() const = 0;
 
-    const T& operator*() const;
-    const T* operator->() const;
+        virtual void Increment() = 0;
+        virtual void Decrement() = 0;
 
-    TConstIterator& operator++();
-    const TConstIterator operator++(int);
+        virtual bool EqualTo(IConstIteratorImplementation* const other) const = 0;
+        virtual bool EqualTo(typename TIterator<T>::IIteratorImplementation* const other) const = 0;
 
-    TConstIterator& operator--();
-    const TConstIterator operator--(int);
+        virtual bool IsValid() const = 0;
 
-    bool operator==(const TConstIterator& other) const;
-    bool operator!=(const TConstIterator& other) const;
+        virtual ~IConstIteratorImplementation() = default;
+    };
 
-    bool IsValid() const;
+    TConstIterator(IConstIteratorImplementation* const implementation)
+        : Implementation(implementation) {
+    }
+
+    TConstIterator(const TConstIterator& other) = default;
+
+    TConstIterator& operator=(const TConstIterator& other) = default;
+
+    const T& operator*() const {
+        return Implementation->GetReference();
+    }
+
+    const T* operator->() const {
+        return Implementation->GetPointer();
+    }
+
+    TConstIterator& operator++() {
+        Implementation->Increment();
+        return *this;
+    }
+
+    TConstIterator operator++(int) {
+        TConstIterator<T> result(*this);
+        Implementation->Increment();
+        return result;
+    }
+
+    TConstIterator& operator--() {
+        Implementation->Decrement();
+        return *this;
+    }
+
+    TConstIterator operator--(int) {
+        TConstIterator<T> result(*this);
+        Implementation->Decrement();
+        return result;
+    }
+
+    bool operator==(const TConstIterator& other) const {
+        return Implementation->EqualTo(other.Implementation);
+    }
+
+    bool operator==(const TIterator<T>& other) const {
+        return Implementation->EqualTo(other.Implementation);
+    }
+
+    bool operator!=(const TConstIterator& other) const {
+        return !operator==(other);
+    }
+
+    bool operator!=(const TIterator<T>& other) const {
+        return !operator==(other);
+    }
+
+    bool IsValid() const {
+        return Implementation->IsValid();
+    }
 
 private:
-    friend class TBiDirectionalList;
-    friend class TIterator;
+    friend class TBiDirectionalList<T>;
 
-    const TBiDirectionalList* List;
-    const TNode* Node;
-
-    TConstIterator(const TBiDirectionalList* const list, TNode* node)
-        : List(list), Node(node) {}
+    IConstIteratorImplementation* Implementation;
 };
 
 template<typename T>
-T& TBiDirectionalList<T>::TIterator::operator*() const {
-    return Node->Value;
-}
+struct TListIteratorImplementation : public TIterator<T>::IIteratorImplementation {
+public:
+    T& GetReference() const override {
+        return Node->Value;
+    }
+    T* GetPointer() const override {
+        return &(Node->Value);
+    }
+
+    void Increment() override;
+    void Decrement() override;
+
+    bool EqualTo(typename TIterator<T>::IIteratorImplementation* const other) const override {
+        auto other_list_iterator = (TListIteratorImplementation*)(other);
+        return List == other_list_iterator->List && Node == other_list_iterator->Node;
+    }
+
+    bool IsValid() const override {
+        return Node != nullptr;
+    }
+
+private:
+    friend class TBiDirectionalList<T>;
+    friend class TListConstIteratorImplementation<T>;
+
+    const TBiDirectionalList<T>* List;
+    typename TBiDirectionalList<T>::TNode* Node;
+
+    TListIteratorImplementation(const TBiDirectionalList<T>* list, typename TBiDirectionalList<T>::TNode* node)
+        : List(list), Node(node) {
+    }
+};
 
 template<typename T>
-T* TBiDirectionalList<T>::TIterator::operator->() const {
-    return &(Node->Value);
-}
+struct TListConstIteratorImplementation : public TConstIterator<T>::IConstIteratorImplementation {
+public:
+    const T& GetReference() const override {
+        return Node->Value;
+    }
+
+    const T* GetPointer() const override {
+        return &(Node->Value);
+    }
+
+    void Increment() override;
+    void Decrement() override;
+
+    bool EqualTo(typename TConstIterator<T>::IConstIteratorImplementation* const other) const override {
+        auto other_list_iterator = (TListConstIteratorImplementation*)(other);
+        return List == other_list_iterator->List && Node == other_list_iterator->Node;
+    }
+
+    bool EqualTo(typename TIterator<T>::IIteratorImplementation* const other) const override {
+        auto other_list_iterator = (TListIteratorImplementation<T>*)(other);
+        return List == other_list_iterator->List && Node == other_list_iterator->Node;
+    }
+
+    bool IsValid() const override {
+        return Node != nullptr;
+    }
+
+private:
+    friend class TBiDirectionalList<T>;
+
+    const TBiDirectionalList<T>* List;
+    typename TBiDirectionalList<T>::TNode* Node;
+
+    TListConstIteratorImplementation(const TBiDirectionalList<T>* list, typename TBiDirectionalList<T>::TNode* node)
+        : List(list), Node(node) {
+    }
+};
 
 template<typename T>
-typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::operator++() {
+void TListIteratorImplementation<T>::Increment() {
     if (Node == nullptr) {
         throw std::invalid_argument("Attempt to increment nullptr!");
     }
     Node = Node->NextNode;
-    return *this;
 }
 
 template<typename T>
-const typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::TIterator::operator++(int) {
-    if (Node == nullptr) {
-        throw std::invalid_argument("Attempt to increment nullptr!");
-    }
-    auto result = *this;
-    Node = Node->NextNode;
-    return result;
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::operator--() {
+void TListIteratorImplementation<T>::Decrement() {
     if (Node == List->First) {
         throw std::invalid_argument("Attempt to decrement begin!");
     }
@@ -186,76 +340,18 @@ typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::ope
     } else {
         Node = Node->PreviousNode;
     }
-    return *this;
 }
 
 template<typename T>
-const typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::TIterator::operator--(int) {
-    if (Node == List->First) {
-        throw std::invalid_argument("Attempt to decrement begin!");
-    }
-    auto result = *this;
-    if (Node == nullptr) {
-        Node = List->Last;
-    } else {
-        Node = Node->PreviousNode;
-    }
-    return result;
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TIterator& TBiDirectionalList<T>::TIterator::operator=(const TBiDirectionalList::TIterator& other) {
-    List = other.List;
-    Node = other.Node;
-    return *this;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TIterator::operator==(const TBiDirectionalList::TIterator& other) const {
-    return List == other.List && Node == other.Node;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TIterator::operator!=(const TBiDirectionalList::TIterator& other) const {
-    return List != other.List || Node != other.Node;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TIterator::IsValid() const {
-    return Node != nullptr;
-}
-
-template<typename T>
-const T& TBiDirectionalList<T>::TConstIterator::operator*() const {
-    return Node->Value;
-}
-
-template<typename T>
-const T* TBiDirectionalList<T>::TConstIterator::operator->() const {
-    return &(Node->Value);
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TConstIterator& TBiDirectionalList<T>::TConstIterator::operator++() {
+void TListConstIteratorImplementation<T>::Increment() {
     if (Node == nullptr) {
         throw std::invalid_argument("Attempt to increment nullptr!");
     }
     Node = Node->NextNode;
-    return *this;
 }
 
 template<typename T>
-const typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::TConstIterator::operator++(int) {
-    if (Node == nullptr) {
-        throw std::invalid_argument("Attempt to increment nullptr!");
-    }
-    auto result = *this;
-    Node = Node->NextNode;
-    return result;
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TConstIterator& TBiDirectionalList<T>::TConstIterator::operator--() {
+void TListConstIteratorImplementation<T>::Decrement() {
     if (Node == List->First) {
         throw std::invalid_argument("Attempt to decrement begin!");
     }
@@ -264,36 +360,6 @@ typename TBiDirectionalList<T>::TConstIterator& TBiDirectionalList<T>::TConstIte
     } else {
         Node = Node->PreviousNode;
     }
-    return *this;
-}
-
-template<typename T>
-const typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::TConstIterator::operator--(int) {
-    if (Node == List->First) {
-        throw std::invalid_argument("Attempt to decrement begin!");
-    }
-    auto result = *this;
-    if (Node == nullptr) {
-        Node = List->Last;
-    } else {
-        Node = Node->PreviousNode;
-    }
-    return result;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TConstIterator::operator==(const TBiDirectionalList::TConstIterator& other) const {
-    return List == other.List && Node == other.Node;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TConstIterator::operator!=(const TBiDirectionalList::TConstIterator& other) const {
-    return List != other.List || Node != other.Node;
-}
-
-template<typename T>
-bool TBiDirectionalList<T>::TConstIterator::IsValid() const {
-    return Node != nullptr;
 }
 
 template<typename T>
@@ -314,23 +380,23 @@ void TBiDirectionalList<T>::Clear() {
 }
 
 template<typename T>
-typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::begin() {
-    return TIterator(this, First);
+TIterator<T> TBiDirectionalList<T>::begin() {
+    return TIterator<T>(new TListIteratorImplementation<T>(this, First));
 }
 
 template<typename T>
-typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::end() {
-    return TIterator(this, nullptr);
+TIterator<T> TBiDirectionalList<T>::end() {
+    return TIterator<T>(new TListIteratorImplementation<T>(this, nullptr));
 }
 
 template<typename T>
-typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::begin() const {
-    return TConstIterator(this, First);
+TConstIterator<T> TBiDirectionalList<T>::begin() const {
+    return TConstIterator<T>(new TListConstIteratorImplementation<T>(this, First));
 }
 
 template<typename T>
-typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::end() const {
-    return TConstIterator(this, nullptr);
+TConstIterator<T> TBiDirectionalList<T>::end() const {
+    return TConstIterator<T>(new TListConstIteratorImplementation<T>(this, nullptr));
 }
 
 template<typename T>
@@ -345,8 +411,8 @@ bool operator==(const TBiDirectionalList<T>& lhs, const TBiDirectionalList<T>& r
     if (lhs.GetSize() != rhs.GetSize()) {
         return false;
     }
-    typename TBiDirectionalList<T>::TConstIterator lhsIt = lhs.begin();
-    typename TBiDirectionalList<T>::TConstIterator rhsIt = rhs.begin();
+    TConstIterator<T> lhsIt = lhs.begin();
+    TConstIterator<T> rhsIt = rhs.begin();
     while (lhsIt != lhs.end() && (*lhsIt) == (*rhsIt)) {
         ++lhsIt;
         ++rhsIt;
@@ -355,35 +421,35 @@ bool operator==(const TBiDirectionalList<T>& lhs, const TBiDirectionalList<T>& r
 }
 
 template<typename T>
-void TBiDirectionalList<T>::InsertBefore(TBiDirectionalList::TIterator position, const T& value) {
-    if (position.List != this) {
+void TBiDirectionalList<T>::InsertBefore(TIterator<T> position, const T& value) {
+    if (((TListIteratorImplementation<T>*)(position.Implementation))->List != this) {
         throw std::runtime_error("Incorrect iterator to the list!");
     }
-    InsertBefore(position.Node, new TNode(value));
+    InsertBefore(((TListIteratorImplementation<T>*)(position.Implementation))->Node, new TNode(value));
 }
 
 template<typename T>
-void TBiDirectionalList<T>::InsertBefore(TBiDirectionalList::TIterator position, T&& value) {
-    if (position.List != this) {
+void TBiDirectionalList<T>::InsertBefore(TIterator<T> position, T&& value) {
+    if (((TListIteratorImplementation<T>*)(position.Implementation))->List != this) {
         throw std::runtime_error("Incorrect iterator to the list!");
     }
-    InsertBefore(position.Node, new TNode(std::move(value)));
+    InsertBefore(((TListIteratorImplementation<T>*)(position.Implementation))->Node, new TNode(std::move(value)));
 }
 
 template<typename T>
-void TBiDirectionalList<T>::InsertAfter(TBiDirectionalList::TIterator position, const T& value) {
-    if (position.List != this) {
+void TBiDirectionalList<T>::InsertAfter(TIterator<T> position, const T& value) {
+    if (((TListIteratorImplementation<T>*)(position.Implementation))->List != this) {
         throw std::runtime_error("Incorrect iterator to the list!");
     }
-    InsertAfter(position.Node, new TNode(value));
+    InsertAfter(((TListIteratorImplementation<T>*)(position.Implementation))->Node, new TNode(value));
 }
 
 template<typename T>
-void TBiDirectionalList<T>::InsertAfter(TBiDirectionalList::TIterator position, T&& value) {
-    if (position.List != this) {
+void TBiDirectionalList<T>::InsertAfter(TIterator<T> position, T&& value) {
+    if (((TListIteratorImplementation<T>*)(position.Implementation))->List != this) {
         throw std::runtime_error("Incorrect iterator to the list!");
     }
-    InsertAfter(position.Node, new TNode(std::move(value)));
+    InsertAfter(((TListIteratorImplementation<T>*)(position.Implementation))->Node, new TNode(std::move(value)));
 }
 
 template<typename T>
@@ -407,11 +473,11 @@ void TBiDirectionalList<T>::PushFront(T&& value) {
 }
 
 template<typename T>
-void TBiDirectionalList<T>::Erase(TBiDirectionalList::TIterator position) {
-    if (position.List != this) {
+void TBiDirectionalList<T>::Erase(TIterator<T> position) {
+    if (((TListIteratorImplementation<T>*)(position.Implementation))->List != this) {
         throw std::runtime_error("Incorrect iterator to the list!");
     }
-    Erase(position.Node);
+    Erase(((TListIteratorImplementation<T>*)(position.Implementation))->Node);
 }
 
 template<typename T>
@@ -422,26 +488,6 @@ void TBiDirectionalList<T>::PopFront() {
 template<typename T>
 void TBiDirectionalList<T>::PopBack() {
     Erase(Last);
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::Find(const T& value) {
-    return std::find(begin(), end(), value);
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::Find(const T& value) const {
-    return std::find(begin(), end(), value);
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TIterator TBiDirectionalList<T>::Find(std::function<bool(const T&)> predicate) {
-    return std::find_if(begin(), end(), predicate);
-}
-
-template<typename T>
-typename TBiDirectionalList<T>::TConstIterator TBiDirectionalList<T>::Find(std::function<bool(const T&)> predicate) const {
-    return std::find_if(begin(), end(), predicate);
 }
 
 template<typename T>

@@ -20,7 +20,7 @@ struct TDeque : public TPeopleGroup {
     void Accept(const TVisitor& visitor) override;
 
     TBiDirectionalList<QString> Deque;
-    TBiDirectionalList<QString>::TIterator Iterator;
+    TIterator<QString> Iterator;
 };
 
 struct TCrawd : public TPeopleGroup {
