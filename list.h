@@ -33,11 +33,11 @@ public:
 
     void Clear();
 
-    TIterator<T> begin();
-    TIterator<T> end();
+    TIterator<T> begin() override;
+    TIterator<T> end() override;
 
-    TConstIterator<T> begin() const;
-    TConstIterator<T> end() const;
+    TConstIterator<T> begin() const override;
+    TConstIterator<T> end() const override;
 
     std::vector<T> AsArray() const;
 
