@@ -30,7 +30,8 @@ HEADERS += \
     controller.h \
     view.h \
     visitor.h \
-    peoplegroup.h
+    peoplegroup.h \
+    iterable.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

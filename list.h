@@ -8,6 +8,8 @@
 #include <vector>
 #include <memory>
 
+#include "iterable.h"
+
 template<typename T>
 class TIterator;
 
@@ -21,7 +23,7 @@ template<typename T>
 class TListConstIteratorImplementation;
 
 template<typename T>
-class TBiDirectionalList {
+class TBiDirectionalList : public IIterable<T> {
 public:
     TBiDirectionalList() : First(nullptr), Last(nullptr) {}
 
